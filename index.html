@@ -2134,22 +2134,23 @@
         const dasarDenda = Math.max(0, totalBruto);
         const dasarTagihanTransfer = Math.max(0, totalNetting - nilaiPph23 + biayaPacking);
         const dendaCetakanKetiga = Math.round(dasarDenda * 0.02);
+        const totalTransferCetakanKetiga = dasarTagihanTransfer + dendaCetakanKetiga;
+        const dendaCetakanKeempat = Math.round(totalTransferCetakanKetiga * 0.02);
         const labelDenda = nomorCetakan === 2
             ? " (1%)"
             : nomorCetakan === 3
                 ? " (2%)"
                 : nomorCetakan >= 4
-                    ? " (2% dari akumulasi tagihan plus denda)"
+                    ? " (akumulasi denda cetakan ke-3 dan ke-4)"
                     : "";
         const dendaKeterlambatan = nomorCetakan === 2
             ? Math.round(dasarDenda * 0.01)
             : nomorCetakan === 3
                 ? dendaCetakanKetiga
                 : nomorCetakan >= 4
-                    ? Math.round((dasarTagihanTransfer + dendaCetakanKetiga) * 0.02)
+                    ? dendaCetakanKetiga + dendaCetakanKeempat
                     : 0;
-        const dendaCetakanSebelumnya = nomorCetakan >= 4 ? dendaCetakanKetiga : 0;
-        const total = Math.max(0, dasarTagihanTransfer + dendaCetakanSebelumnya + dendaKeterlambatan);
+        const total = Math.max(0, dasarTagihanTransfer + dendaKeterlambatan);
         const unit = invoiceSummary.jumlahUnit || 0;
         const tarif = invoiceSummary.tarifPerUnit || 0;
 
