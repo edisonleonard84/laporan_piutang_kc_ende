@@ -1,0 +1,3337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Piutang Korporat KC Ende 86300</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; background-color: #f8f9fa; }
+        
+        /* OPTIMALISASI KONTROL PANEL (SATU BARIS RESPONSIVE) */
+        .control-panel { 
+            max-width: 760px; 
+            margin: 16px auto 0 auto; 
+            padding: 12px 14px; 
+            background-color: #f3f4f6; 
+            border: 1px solid #dfe3e8; 
+            border-radius: 10px; 
+        }
+        #inputNomorSurat {
+            flex: 0 1 205px;
+            width: 205px;
+            min-width: 0;
+            border-radius: 0;
+            background-color: #fff;
+            box-shadow: none;
+        }
+        #inputNomorSurat:read-only {
+            color: #212529;
+            cursor: default;
+        }
+        #inputNomorUrutSurat {
+            flex: 0 0 54px;
+            width: 54px;
+            min-width: 54px;
+            text-align: center;
+        }
+        
+        /* OPTIMALISASI TOMBOL KONTROL PANEL (HANYA IKON) */
+        .btn-custom-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .btn-custom-icon.dropdown-toggle {
+            width: auto;
+            padding: 0 12px;
+            min-width: 42px;
+        }
+        .btn-custom-icon.dropdown-toggle::after {
+            margin-left: 0.35rem;
+        }
+        .btn-custom-icon:active {
+            transform: scale(0.95);
+        }
+        .btn-sheets-icon {
+            background-color: #fff;
+            color: #198754;
+            border: 1px solid #198754;
+        }
+        .btn-sheets-icon:hover {
+            background-color: #198754;
+            color: #fff;
+        }
+        .btn-print-icon {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .btn-print-icon:hover {
+            background-color: #bb2d3b;
+        }
+        .btn-wa-icon {
+            background-color: #25D366;
+            color: #fff;
+        }
+        .btn-wa-icon:hover {
+            background-color: #20ba5a;
+        }
+        .btn-upload-icon {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+        .btn-upload-icon:hover {
+            background-color: #0b5ed7;
+        }
+
+        /* WADAH UTAMA LAPORAN - REVISI DIPERSEMPIT SEUSAI LEBAR ISI */
+        .report-container { 
+            background-color: #ffffff; 
+            width: min(100%, 720px); 
+            margin: 12px auto 24px auto; 
+            padding: 18px 22px; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
+        }
+        
+        /* HEADER JUDUL UTAMA LAPORAN (KOTAK ORANGE/KUNING TUA) */
+        .header-title {
+            background: linear-gradient(180deg, #ffe66d 0%, #f8d94d 100%);
+            color: #000000 !important;
+            font-weight: bold;
+            text-align: center;
+            padding: 12px 16px;
+            border: 1px solid #d7af1c;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .header-meta-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            row-gap: 4px;
+            column-gap: 10px;
+            text-align: left;
+            max-width: 440px;
+            margin: 8px auto 0 auto;
+            font-size: 11px;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+        
+        /* KOREKSI TABEL: DIPERSEMPIT SESUAI ISI KOLOM */
+        .table-report {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0 auto 12px auto;
+            background: #fff;
+            border: 1px solid #dfe3e8;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .table-report th, .table-report td {
+            border: 1px solid #dfe3e8;
+            padding: 7px 6px;
+            vertical-align: middle;
+            font-size: 11px;
+            line-height: 1.3;
+            text-align: center;
+        }
+        
+        .table-report th {
+            background-color: #fff3b0 !important;
+            color: #000000 !important;
+            font-weight: bold;
+            padding: 9px 6px;
+        }
+        
+        .table-report tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        .table-report tbody tr:hover {
+            background-color: #f7f9fc;
+        }
+        
+        .table-report th:nth-child(1), .table-report td:nth-child(1) { width: 7%; }
+        .table-report th:nth-child(2), .table-report td:nth-child(2) { width: 18%; }
+        .table-report th:nth-child(3), .table-report td:nth-child(3) { width: 15%; }
+        .table-report th:nth-child(n+4), .table-report td:nth-child(n+4) { width: 15%; }
+        .table-report td:nth-child(n+4) { text-align: right; }
+
+        .additional-table {
+            min-width: 1250px;
+            margin-bottom: 0;
+            background: #fff;
+            font-size: 11px;
+        }
+        .additional-table th {
+            background: #fff3b0;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .additional-table td { vertical-align: middle; }
+        .additional-table .text-num { text-align: right; white-space: nowrap; }
+        
+        .text-center { text-align: center; }
+        .text-end { text-align: right; }
+        .float-end { float: right; }
+        
+        /* FORMAT INFORMASI REKONSILIASI SALDO */
+        .info-saldo-section {
+            display: none;
+            width: 100%;
+            margin-top: 16px;
+            padding-top: 2px;
+        }
+        .info-saldo-section .title-saldo {
+            width: 90%;
+            margin: 0 auto 0 auto;
+            padding: 6px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            letter-spacing: 0.4px;
+            background: linear-gradient(180deg, #ffe66d 0%, #f7d653 100%);
+            color: #000;
+            border: 1px solid #d3a719;
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            text-transform: uppercase;
+        }
+        .info-saldo-section table {
+            width: 90%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            border: 1px solid #c7b77f;
+            table-layout: fixed;
+            border-radius: 0 0 8px 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .info-saldo-section td {
+            padding: 5px 8px;
+            border: 1px solid #d9d9d9 !important;
+            font-size: 11.5px;
+            font-weight: bold;
+            background-color: #fff;
+        }
+        .info-saldo-section .label-saldo { text-align: left; width: 62%; }
+        .info-saldo-section .rp-saldo { text-align: left; width: 12%; }
+        .info-saldo-section .nilai-saldo { text-align: right; width: 26%; }
+        .info-saldo-section .saldo-lalu-row {
+            display: none;
+        }
+        
+        .highlight-box td {
+            background: linear-gradient(180deg, #f9e37f 0%, #f5d24c 100%) !important;
+            color: #000000 !important;
+            font-weight: bold;
+        }
+        
+        .note-container { width: 90%; margin: 4px auto 15px auto; }
+        .note-text { font-size: 10.5px; color: #333; font-style: italic; }
+        
+        /* TANDA TANGAN STRUKTUR SEJAJAR */
+        .ttd-section {
+            margin-top: 18px;
+            width: 100%;
+            border-top: 1px solid #ececec;
+            padding-top: 12px;
+        }
+        .ttd-table { width: 100%; border-collapse: collapse; }
+        .ttd-table td { width: 50%; text-align: center; vertical-align: top; border: none !important; padding: 0 10px; font-size: 11px; }
+        .ttd-space { height: 72px; }
+        .ttd-nama { font-weight: bold; text-decoration: underline; margin-bottom: 2px; text-transform: uppercase; }
+        .nippos-text { margin: 0; font-size: 11px; color: #555; }
+
+        /* PAGE NAV (Preview on screen) */
+        .page-nav-wrapper{
+            max-width: 760px;
+            margin: 8px auto 0 auto;
+            padding: 0 10px;
+        }
+        .page-nav{
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            background: #f5f6f7;
+            border: 1px solid #dfe3e8;
+            border-radius: 9px;
+            padding: 6px 8px;
+        }
+        .page-toggle{
+            border: 1px solid #0d6efd;
+            background: #fff;
+            color: #0d6efd;
+            border-radius: 7px;
+            padding: 5px 12px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s, transform 0.05s;
+        }
+        .page-toggle:active{ transform: scale(0.98); }
+        .page-toggle.active{
+            background: #0d6efd;
+            color: #fff;
+        }
+        .page-section{
+            display: none;
+        }
+        .page-section.active{
+            display: block;
+        }
+
+        /* LAYOUT SIDEBAR LAPORAN */
+        .workspace-layout {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+            width: 100%;
+            margin: 0 auto 24px;
+            padding: 0 14px 0 0;
+            transition: grid-template-columns 0.25s ease;
+        }
+        .workspace-sidebar {
+            position: sticky;
+            top: 14px;
+            min-width: 0;
+            min-height: calc(100vh - 210px);
+            padding: 0 14px 24px 14px;
+            border-right: 1px solid #d6dce5;
+            background: #fff;
+            box-shadow: 3px 0 10px rgba(15, 23, 42, 0.05);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin: 12px 0 8px;
+            padding: 10px 12px;
+            color: #fff;
+            background: linear-gradient(135deg, #1268d8, #0d6efd);
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .sidebar-toggle,
+        .sidebar-open-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 32px;
+            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 6px;
+            background: transparent;
+            color: inherit;
+            cursor: pointer;
+        }
+        .sidebar-open-toggle {
+            display: none;
+            margin: 12px 0 0;
+            border-color: #0d6efd;
+            background: #0d6efd;
+            color: #fff;
+        }
+        .workspace-layout.sidebar-collapsed {
+            grid-template-columns: 0 minmax(0, 1fr);
+            width: calc(100% - 18px);
+            margin-left: 18px;
+        }
+        .workspace-layout.sidebar-collapsed .workspace-sidebar {
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transform: translateX(-100%);
+            border-right-color: transparent;
+            box-shadow: none;
+        }
+        .workspace-layout.sidebar-collapsed .sidebar-open-toggle {
+            display: inline-flex;
+        }
+        #appContent.sidebar-collapsed .control-panel {
+            margin-left: 18px;
+        }
+        .workspace-sidebar .page-nav-wrapper {
+            max-width: none;
+            margin: 0;
+            padding: 0;
+        }
+        .workspace-sidebar .page-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+        }
+        .workspace-sidebar .page-toggle {
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+        }
+        .page-content {
+            min-width: 0;
+            width: 100%;
+        }
+        .page-content .report-container {
+            width: min(100%, 1100px);
+        }
+        .page-content .surat-container {
+            box-sizing: border-box;
+            max-width: calc(100% - 24px);
+        }
+        .app-topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-height: 56px;
+            padding: 0 18px;
+            color: #fff;
+            background: #1672f9;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.16);
+        }
+        .app-topbar .topbar-menu {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: 0;
+            border-radius: 6px;
+            background: transparent;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .app-topbar .topbar-title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .app-topbar .topbar-subtitle {
+            margin-left: auto;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        .workspace-layout {
+            display: block;
+            width: calc(100% - 236px);
+            margin-left: 236px;
+            padding: 0;
+        }
+        .workspace-sidebar {
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 56px;
+            width: 220px;
+            height: calc(100vh - 56px);
+            overflow-y: auto;
+        }
+        .page-content {
+            width: 100%;
+        }
+        .control-panel {
+            max-width: none;
+            margin: 16px 18px 0 250px;
+        }
+
+        .pph23-page {
+            width: min(100%, 1400px);
+            margin: 0 auto 20px;
+            padding: 0 5px;
+            overflow-x: auto;
+            background: #fff;
+        }
+        .pph23-header {
+            margin-bottom: 23px;
+            padding: 5px 3px 25px;
+            background: #fff500;
+            color: #000;
+        }
+        .pph23-title {
+            margin-bottom: 29px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .pph23-meta {
+            display: grid;
+            grid-template-columns: 176px 1fr;
+            gap: 4px 8px;
+            font-size: 15px;
+        }
+        .pph23-table {
+            width: 100%;
+            min-width: 1050px;
+            table-layout: fixed;
+            border-collapse: collapse;
+            background: #fff;
+            font-size: 14px;
+        }
+        .pph23-table th, .pph23-table td {
+            overflow: hidden;
+            padding: 3px 5px;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .pph23-table th { height: 24px; font-weight: bold; text-align: center; }
+        .pph23-table th:nth-child(1), .pph23-table td:nth-child(1) { width: 2.5%; }
+        .pph23-table th:nth-child(2), .pph23-table td:nth-child(2) { width: 11.3%; }
+        .pph23-table th:nth-child(3), .pph23-table td:nth-child(3) { width: 8.5%; }
+        .pph23-table th:nth-child(4), .pph23-table td:nth-child(4) { width: 7%; }
+        .pph23-table th:nth-child(5), .pph23-table td:nth-child(5) { width: 7%; }
+        .pph23-table th:nth-child(6), .pph23-table td:nth-child(6) { width: 17%; }
+        .pph23-table th:nth-child(7), .pph23-table td:nth-child(7) { width: 16%; }
+        .pph23-table th:nth-child(8), .pph23-table td:nth-child(8) { width: 6.8%; }
+        .pph23-table th:nth-child(9), .pph23-table td:nth-child(9) { width: 9%; }
+        .pph23-table th:nth-child(10), .pph23-table td:nth-child(10) { width: 8%; }
+        .pph23-table th:nth-child(11), .pph23-table td:nth-child(11) { width: 7%; }
+        .pph23-table td:nth-child(n+3):nth-child(-n+8) { text-align: left; }
+        .pph23-table td:nth-child(n+9) { text-align: right; }
+        .pph23-table .pph23-total-row td { text-align: right !important; }
+        .pph23-table input {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            height: auto;
+            min-height: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            line-height: inherit;
+            box-shadow: none;
+        }
+        .pph23-table input:focus { outline: 1px solid #86b7fe; background: #fff; }
+
+        .invoice-page {
+            max-width: 980px;
+            margin: 18px auto 20px auto;
+            background: #fff;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 18px 20px 16px 20px;
+            color: #111;
+            font-family: Arial, sans-serif;
+        }
+        .invoice-page * {
+            box-sizing: border-box;
+        }
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #0d2b4f;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+        .invoice-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .invoice-brand img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            filter: drop-shadow(0 1px 0 rgba(0,0,0,0.1));
+        }
+        .invoice-company {
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 1.2;
+            text-transform: uppercase;
+            color: #0d2b4f;
+        }
+        .invoice-company small {
+            display: block;
+            font-size: 10px;
+            font-weight: 400;
+            text-transform: none;
+            margin-top: 2px;
+            color: #2a2a2a;
+        }
+        .invoice-title {
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0d2b4f;
+            line-height: 1;
+        }
+        .invoice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        .invoice-box {
+            border: 1.2px solid #000;
+            padding: 10px 12px;
+            background: #f9f9f9;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .invoice-box-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 12px;
+            color: #0d2b4f;
+            letter-spacing: 0.3px;
+        }
+        .invoice-row {
+            display: grid;
+            grid-template-columns: 180px 10px 1fr;
+            gap: 8px;
+            margin-bottom: 5px;
+            font-size: 12px;
+            line-height: 1.55;
+            align-items: center;
+        }
+        .invoice-row > div:nth-child(1) {
+            font-weight: 600;
+        }
+        .invoice-row > div:nth-child(3) {
+            font-weight: 600;
+            color: #111;
+        }
+        .invoice-bottom-row {
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            gap: 18px;
+            margin-top: 10px;
+        }
+        .invoice-bank-box {
+            width: 100%;
+            min-height: 176px;
+            border: none;
+            background: #fff;
+            padding: 12px 14px;
+            margin-right: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .invoice-bank-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 10px;
+        }
+        .invoice-bank-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+            line-height: 1.45;
+            font-weight: 600;
+            color: #111;
+            white-space: normal;
+        }
+        .invoice-editable-input {
+            width: 100%;
+            min-width: 170px;
+            border: none;
+            outline: none;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 0;
+            background: transparent;
+            box-sizing: border-box;
+            font-weight: 600;
+            color: #111;
+        }
+        #invoiceJatuhTempo {
+            width: 100%;
+            max-width: 192px;
+            min-width: 170px;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-top: 10px;
+            margin-bottom: 12px;
+            border: 2px solid #000;
+        }
+        .invoice-table th,
+        .invoice-table td {
+            border: 1px solid #000;
+            padding: 6px 7px;
+            vertical-align: middle;
+            font-size: 12px;
+            line-height: 1.2;
+        }
+        .invoice-table th {
+            background: #e5c75a;
+            font-weight: 700;
+            text-align: center;
+            color: #000;
+        }
+        .invoice-table td {
+            background: #fff;
+        }
+        .invoice-table td.num {
+            text-align: right;
+        }
+        .invoice-table th:nth-child(1),
+        .invoice-table td:nth-child(1) {
+            width: 50px;
+            text-align: center;
+        }
+        .invoice-table th:nth-child(2),
+        .invoice-table td:nth-child(2) {
+            width: 110px;
+            text-align: center;
+        }
+        .invoice-table th:nth-child(4),
+        .invoice-table td:nth-child(4) {
+            width: 150px;
+            text-align: center;
+        }
+        .invoice-table th:nth-child(5),
+        .invoice-table td:nth-child(5) {
+            width: 180px;
+            text-align: right;
+        }
+        .invoice-summary {
+            width: 420px;
+            margin-left: auto;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        .invoice-summary td {
+            border: none;
+            padding: 6px 8px;
+            font-size: 12px;
+            background: #fff;
+            vertical-align: middle;
+        }
+        .invoice-summary td:first-child {
+            font-weight: 700;
+            width: 38%;
+        }
+        .invoice-summary td:nth-child(2) {
+            width: 22%;
+            text-align: right;
+        }
+        .invoice-summary td:nth-child(3) {
+            width: 10%;
+            text-align: center;
+        }
+        .invoice-summary td:last-child {
+            width: 30%;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .invoice-summary .tax-input {
+            width: 100%;
+            max-width: 54px;
+            text-align: right;
+            padding: 2px 3px;
+            border: none;
+            outline: none;
+            border-radius: 0;
+            font-size: 12px;
+            background: transparent;
+            color: #111;
+        }
+        .invoice-summary .tax-input-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 3px;
+            width: 100%;
+        }
+        .invoice-summary .discount-input {
+            width: 100%;
+            text-align: right;
+            padding: 2px 0;
+            border: none;
+            outline: none;
+            border-radius: 0;
+            font-size: 12px;
+            background: transparent;
+            color: #111;
+        }
+        .invoice-summary .manual-cell {
+            text-align: right;
+            white-space: nowrap;
+        }
+        .invoice-total td {
+            background: #f3d14d !important;
+            font-weight: 700;
+        }
+        .invoice-note {
+            margin-top: 18px;
+            border-top: 2px solid #111;
+            padding-top: 10px;
+            font-size: 11px;
+            line-height: 1.5;
+            text-align: justify;
+            color: #222;
+        }
+
+        .invoice-reference-page {
+            width: 794px;
+            min-height: 1123px;
+            margin: 18px auto 30px;
+            padding: 10px 28px 0;
+            background: #fff;
+            border: 1px solid #111;
+            color: #000;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.25;
+        }
+        .invoice-reference-page * { box-sizing: border-box; }
+        .invoice-reference-header { position: relative; min-height: 112px; text-align: center; }
+        .invoice-reference-logo { position: absolute; top: 0; left: -8px; width: 96px; height: 82px; object-fit: contain; }
+        .invoice-reference-form { position: absolute; top: -5px; right: 0; font-size: 11px; font-style: italic; }
+        .invoice-reference-form select { width: 34px; padding: 1px 2px; border: 1px solid #999; border-radius: 3px; background: #fff; font: inherit; }
+        .invoice-reference-company { padding-top: 12px; font-weight: 700; line-height: 1.55; }
+        .invoice-reference-company div:first-child { font-size: 13px; }
+        .invoice-reference-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin: 12px 0 52px; }
+        .invoice-reference-recipient { line-height: 1.55; }
+        .invoice-reference-recipient div:first-child { margin-bottom: 6px; }
+        #invoiceNamaPelanggan,
+        #invoiceKodePelanggan { font-weight: 700; }
+        .invoice-reference-details { display: grid; grid-template-columns: 104px 14px 1fr; line-height: 1.55; }
+        .invoice-reference-details strong { font-size: 14px; }
+        .invoice-reference-intro { margin-bottom: 12px; }
+        .invoice-reference-table { width: 100%; border-collapse: collapse; table-layout: fixed; border: 1px solid #111; margin: 0 0 22px; }
+        .invoice-reference-table th, .invoice-reference-table td { border: 1px solid #111; padding: 4px 6px; height: 19px; vertical-align: middle; }
+        .invoice-reference-table th { background: #fffdbd; text-align: center; font-weight: 400; }
+        .invoice-reference-table th:nth-child(1) { width: 6%; }
+        .invoice-reference-table th:nth-child(2) { width: 40%; }
+        .invoice-reference-table th:nth-child(3) { width: 12%; }
+        .invoice-reference-table th:nth-child(4) { width: 20%; }
+        .invoice-reference-table th:nth-child(5) { width: 22%; }
+        .invoice-reference-table td:nth-child(1), .invoice-reference-table td:nth-child(3), .invoice-reference-table td:nth-child(4) { text-align: center; }
+        .invoice-reference-table td:last-child { text-align: right; }
+        .invoice-reference-table .invoice-highlight td { font-weight: 700; }
+        .invoice-reference-footer-note { margin: 0 2px 22px; }
+        .invoice-reference-signature { display: grid; grid-template-columns: 1fr 1fr; text-align: center; margin-top: 8px; }
+        .invoice-reference-sign-space { height: 58px; }
+        .invoice-reference-signature strong { text-decoration: underline; }
+        .invoice-reference-bottom-notes { margin: 18px 0 0; padding: 12px 18px; border: 1px solid #111; text-align: left; line-height: 1.35; }
+        .invoice-reference-bottom-notes-title { margin-bottom: 12px; font-weight: 700; }
+        .invoice-reference-bottom-notes ul { margin: 0; padding-left: 22px; list-style-type: circle; }
+        .invoice-reference-bottom-notes li { margin: 0 0 4px; padding-left: 4px; }
+
+        @media print {
+            .invoice-page {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 10mm 12mm !important;
+                min-height: 270mm;
+            }
+            .invoice-header {
+                margin-bottom: 12px;
+                border-bottom: 2px solid #111;
+            }
+            .invoice-box {
+                background: #fff !important;
+            }
+            .invoice-table,
+            .invoice-summary,
+            .invoice-note {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .invoice-table th,
+            .invoice-table td,
+            .invoice-summary td {
+                font-size: 8pt !important;
+            }
+            .invoice-title {
+                font-size: 20pt !important;
+            }
+            .invoice-company {
+                font-size: 11pt !important;
+            }
+            .invoice-reference-page { display: flex; flex-direction: column; justify-content: flex-start; width: 100% !important; min-height: 351mm; margin: 0 !important; padding: 5mm 7mm !important; border: 1px solid #111 !important; box-shadow: none !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 11.5pt; line-height: 1.35; zoom: 0.8; break-inside: avoid-page !important; page-break-inside: avoid !important; }
+            .invoice-reference-form select { appearance: none; -webkit-appearance: none; border: 0; padding: 0; background: transparent; color: inherit; }
+            .invoice-reference-page .invoice-reference-meta { margin: 4mm 0 8mm; }
+            .invoice-reference-page .invoice-reference-company div:first-child { font-size: 14pt; }
+            .invoice-reference-page .invoice-reference-table { margin-bottom: 4mm; }
+            .invoice-reference-page .invoice-reference-table th,
+            .invoice-reference-page .invoice-reference-table td { height: 6mm; padding: 1mm 1.5mm; font-size: 10pt; line-height: 1.1; }
+            .invoice-reference-page .invoice-reference-table th { text-transform: uppercase; font-weight: 700; }
+            .invoice-reference-page .invoice-reference-table tbody td:nth-child(2) { text-transform: uppercase; }
+            .invoice-reference-page .invoice-reference-footer-note { margin-bottom: 4mm; line-height: 1.35; }
+            .invoice-reference-page .invoice-reference-signature { margin-top: 2mm; }
+            .invoice-reference-page .invoice-reference-sign-space { height: 16mm; }
+            .invoice-reference-page .invoice-reference-bottom-notes { margin: 2mm 0 0; padding: 3mm 4mm; line-height: 1.2; font-size: 8.5pt; }
+            .invoice-reference-page .invoice-reference-bottom-notes-title { margin-bottom: 2mm; }
+            .invoice-reference-page .invoice-reference-bottom-notes li { margin-bottom: 1mm; }
+            body.print-page-2 .page-section.page-1 { display: none !important; }
+            body.print-page-2 .page-section.page-2 { display: block !important; page-break-before: auto; break-inside: avoid-page !important; page-break-inside: avoid !important; }
+            body.print-page-3 .page-section.page-1,
+            body.print-page-3 .page-section.page-2 { display: none !important; }
+            body.print-page-3 .page-section.page-3 { display: block !important; page-break-before: auto; }
+            body.print-page-4 .page-section:not(.page-4) { display: none !important; }
+            body.print-page-4 .page-section.page-4 { display: block !important; page-break-before: auto; }
+            body.print-both .page-section { display: none !important; }
+            body.print-both .page-section.page-1,
+            body.print-both .page-section.page-2,
+            body.print-both .page-section.page-3,
+            body.print-both .page-section.page-4 { display: block !important; }
+            body.print-both .page-section.page-1 { break-after: page !important; page-break-after: always !important; }
+            body.print-both .page-section.page-2 { break-before: auto !important; page-break-before: auto !important; break-after: page !important; page-break-after: always !important; }
+            body.print-both .page-section.page-3 { break-before: auto !important; page-break-before: auto !important; break-after: page !important; page-break-after: always !important; }
+            body.print-both .page-section.page-4 { break-before: auto !important; page-break-before: auto !important; }
+        }
+        /* debug-panel removed */
+
+
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.16) 48%, rgba(0, 0, 0, 0.34) 100%),
+                url('./background.jpg') center center / cover no-repeat;
+            display: none;
+            align-items: center;
+            justify-content: flex-end;
+            z-index: 10000;
+            padding: 32px clamp(24px, 7vw, 112px) 32px 32px;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: #ffffff;
+            border-radius: 2px;
+            padding: 28px 24px 24px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+            border: 0;
+        }
+        .login-card img.login-brand {
+            width: 120px;
+            display: block;
+            margin: 0 auto 16px auto;
+        }
+        .login-card .login-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+            color: #0b3d91;
+        }
+        .login-card .login-subtitle {
+            text-align: center;
+            font-size: 13px;
+            color: #5c6574;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .login-card .form-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #3d4b64;
+        }
+        .login-card .form-control {
+            border-radius: 0.75rem;
+            padding: 12px 14px;
+            font-size: 14px;
+            background-color: #f8f9fb;
+            border: 1px solid #dde1e6;
+        }
+        .login-card .btn-login {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .login-card .login-footer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 12px;
+            color: #7a8290;
+        }
+
+        @media (max-width: 800px) {
+            .login-overlay {
+                justify-content: center;
+                padding: 20px;
+                background-position: 38% center;
+            }
+            .login-card {
+                max-width: 420px;
+            }
+        }
+
+        .landing-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(11,61,145,0.92), rgba(2,93,210,0.88));
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+            padding: 15px;
+            backdrop-filter: blur(6px);
+        }
+
+        .landing-card {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 34px 30px;
+            box-shadow: 0 30px 70px rgba(6, 24, 57, 0.24);
+            text-align: center;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .landing-logo {
+            width: 120px;
+            max-width: 100%;
+            margin: 0 auto 20px auto;
+            display: block;
+        }
+
+        .landing-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #0b3d91;
+            letter-spacing: 0.5px;
+        }
+
+        .landing-subtitle {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #1d2a50;
+        }
+
+        .landing-user {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0b3d91;
+            margin-bottom: 12px;
+        }
+
+        .landing-text {
+            font-size: 13px;
+            margin-bottom: 22px;
+            color: #4a5668;
+            line-height: 1.7;
+        }
+
+        .landing-card .btn {
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .landing-card .landing-notice {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .hidden-by-role { display: none !important; }
+
+        .role-info {
+            font-size: 11px;
+            margin-top: 10px;
+            color: #444;
+        }
+
+        .surat-container {
+            background: #fff;
+            width: 794px;
+            min-height: 1123px;
+            margin: 18px auto 30px auto;
+            padding: 46px 56px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 14px;
+            line-height: 1.45;
+            color: #000;
+            page-break-before: always;
+        }
+        .surat-header {
+            display: grid;
+            grid-template-columns: 1fr 76px;
+            align-items: start;
+            margin-bottom: 34px;
+        }
+        .pos-logo-img {
+            width: 126px;
+            height: auto;
+            display: block;
+        }
+        .surat-corner {
+            width: 76px;
+            height: 76px;
+            background: #f23a21;
+            border-bottom-left-radius: 76px;
+            justify-self: end;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .surat-top-grid {
+            display: grid;
+            grid-template-columns: 1fr 205px;
+            column-gap: 50px;
+            margin-bottom: 42px;
+        }
+        .surat-meta {
+            display: grid;
+            grid-template-columns: 68px 12px 1fr;
+            row-gap: 3px;
+        }
+        .surat-address { line-height: 1.55; }
+        .surat-date { margin-bottom: 24px; }
+        .surat-body { padding: 0 38px; }
+        .surat-body p { margin: 0 0 22px 0; }
+        .surat-section {
+            display: grid;
+            grid-template-columns: 24px 1fr;
+            column-gap: 4px;
+            margin-bottom: 22px;
+        }
+        .surat-indent { padding-left: 0; }
+        .surat-money-row {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .surat-money-row strong { font-weight: 700; }
+        .surat-terbilang {
+            font-weight: bold;
+            margin-left: 20px;
+        }
+        .surat-bank-list { font-weight: bold; }
+        .surat-sign {
+            width: 220px;
+            margin-left: auto;
+            text-align: center;
+            margin-top: 46px;
+        }
+        .surat-sign-space { height: 68px; }
+        .surat-underline { text-decoration: underline; }
+        .editable-print {
+            min-width: 120px;
+            display: inline-block;
+            /* border-bottom: 1px dotted #888; */
+            outline: none;
+        }
+        .surat-edit-input {
+            min-width: 205px;
+            max-width: 260px;
+            border: 1px solid #444;
+            border-radius: 2px;
+            padding: 1px 4px;
+            font: inherit;
+            font-weight: bold;
+            color: #000;
+            background: #fff;
+        }
+
+        /* PARAMETER PRINT JAMINAN SATU KERTAS PDF A4 - DIOPTIMALKAN (HURUF DIPERKECIL & RAPAT) */
+        @media print {
+            @page { size: A4 portrait; margin: 8mm 12mm 8mm 12mm; }
+            @page transaction-landscape { size: A4 landscape; margin: 8mm; }
+            *, *::before, *::after { box-sizing: border-box; }
+            body { background-color: #fff; font-size: 8pt; line-height: 1.15; color: #000; padding: 0; margin: 0; width: 100%; }
+            .control-panel, .no-print, .toast-container, .page-nav, .page-toggle, .page-nav-wrapper { display: none !important; }
+            .page-section { display: block !important; }
+            .page-section:not(.page-1) { display: none !important; }
+            body.print-page-2 .page-section.page-2,
+            body.print-page-3 .page-section.page-3,
+            body.print-page-4 .page-section.page-4,
+            body.print-both .page-section.page-1,
+            body.print-both .page-section.page-2,
+            body.print-both .page-section.page-3,
+            body.print-both .page-section.page-4 { display: block !important; }
+            .page-1 { display: block !important; break-inside: avoid; page-break-inside: avoid; }
+
+            .report-container { box-shadow: none; margin: 0; padding: 0; width: 100% !important; max-width: 100% !important; min-width: 100% !important; }
+            .surat-container { box-shadow: none; margin: 0; padding: 0; width: 100% !important; min-height: auto; font-size: 9.5pt; line-height: 1.2; page-break-before: auto; }
+            .surat-header { grid-template-columns: 1fr 22mm; margin-bottom: 5mm; }
+            .pos-logo-img { width: 34mm; }
+            .surat-corner {
+                width: 22mm;
+                height: 22mm;
+                border-bottom-left-radius: 22mm;
+                background: #f23a21 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .surat-top-grid { margin-bottom: 16px; }
+            .surat-date { margin-bottom: 10px; }
+            .surat-body { padding: 0 22px; line-height: 1.2; }
+            .surat-section { margin-bottom: 8px; break-inside: avoid; page-break-inside: avoid; }
+            .surat-sign { margin-top: 16px; }
+            .surat-sign-space { height: 40px; }
+            .editable-print { border-bottom: none; }
+            .surat-edit-input { border: none !important; padding: 0 !important; width: auto !important; max-width: none !important; background: transparent !important; }
+            .report-container { display: block !important; }
+            
+            .header-title { padding: 6px 4px; font-size: 10pt; margin-bottom: 8px; background-color: #ffee55 !important; color: #000000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .header-meta-grid { margin-top: 6px; font-size: 8pt; row-gap: 1px; }
+            
+            .table-report { margin-bottom: 8px; width: 100% !important; }
+            .table-report th { font-size: 8pt; padding: 2px 4px; background-color: #ffee55 !important; color: #000000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .table-report td { padding: 2px 4px; font-size: 8pt; }
+            
+            .info-saldo-section { margin-top: 6px; }
+            .info-saldo-section .title-saldo { font-size: 8.5pt; margin-bottom: 4px; }
+            .info-saldo-section table { width: 100% !important; }
+            .info-saldo-section td { font-size: 8pt; padding: 2px 0; }
+            
+            .highlight-box { outline: 1px solid #000; }
+            .highlight-box td { background-color: #ffee55 !important; color: #000000 !important; padding: 3px 4px !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            
+            .note-container { width: 100% !important; margin: 2px auto 6px auto; }
+            .note-text { font-size: 7.5pt; }
+            
+            .ttd-section { margin-top: 10px; page-break-inside: avoid; width: 100% !important; }
+            .ttd-table td { font-size: 8pt; }
+            .ttd-space { height: 45px; } /* Tinggi dipersempit agar muat 1 halaman namun ruang ttd fisik tetap ada */
+            .nippos-text { font-size: 7.5pt; }
+
+            #additionalPage { max-width: none !important; margin: 0 !important; }
+            #additionalPage .table-responsive { overflow: visible !important; }
+            .page-section.page-3 { page: transaction-landscape; }
+            .additional-table { width: 100% !important; min-width: 0 !important; table-layout: auto; font-size: 7.5pt; }
+            .additional-table th, .additional-table td { padding: 2px 3px; font-size: 7.5pt; white-space: normal; overflow-wrap: anywhere; }
+            .additional-table th:nth-child(1), .additional-table td:nth-child(1) { width: 4%; text-align: center; }
+            .additional-table th:nth-child(2), .additional-table td:nth-child(2) { width: 10%; }
+            .additional-table th:nth-child(3), .additional-table td:nth-child(3) { width: 15%; }
+            .additional-table th:nth-child(4), .additional-table td:nth-child(4) { width: 12%; }
+            .additional-table th:nth-child(5), .additional-table td:nth-child(5) { width: 14%; }
+            .additional-table th:nth-child(6), .additional-table td:nth-child(6) { width: 6%; text-align: center; }
+            .additional-table th:nth-child(7), .additional-table td:nth-child(7) { width: 5%; text-align: center; }
+            .additional-table th:nth-child(8), .additional-table td:nth-child(8) { width: 8%; }
+            .additional-table th:nth-child(9), .additional-table td:nth-child(9) { width: 5%; }
+            .additional-table th:nth-child(10), .additional-table td:nth-child(10) { width: 6%; }
+            .additional-table th:nth-child(11), .additional-table td:nth-child(11) { width: 8%; }
+            .additional-table th:nth-child(12), .additional-table td:nth-child(12) { width: 7%; }
+            .additional-table th:nth-child(1),
+            .additional-table th:nth-child(6),
+            .additional-table th:nth-child(7),
+            .additional-table td:nth-child(6),
+            .additional-table td:nth-child(7) { white-space: nowrap; }
+            .additional-table thead { display: table-header-group; }
+            .additional-table tr { break-inside: avoid; page-break-inside: avoid; }
+            .additional-page-title { padding: 6px 4px; font-size: 10pt; margin-bottom: 8px; background-color: #ffee55 !important; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .pph23-page { width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
+            .pph23-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .pph23-title { font-size: 12pt; }
+            .pph23-meta { font-size: 9pt; }
+            .pph23-table { width: 100% !important; min-width: 0; }
+            .pph23-table th, .pph23-table td { padding: 2px 3px; font-size: 7pt; white-space: normal; overflow-wrap: anywhere; }
+            .pph23-table input { min-width: 0; width: 100%; padding: 0; border: 0; }
+        }
+        @media (max-width: 800px) {
+            .workspace-layout {
+                display: block;
+                width: 100%;
+                margin-left: 0;
+                padding: 0 8px;
+            }
+            .workspace-sidebar {
+                position: static;
+                width: auto;
+                height: auto;
+                min-height: auto;
+                padding: 0 0 12px;
+                border-right: 0;
+                box-shadow: none;
+                margin-bottom: 12px;
+            }
+            .workspace-layout.sidebar-collapsed .workspace-sidebar {
+                display: none;
+            }
+            .workspace-layout.sidebar-collapsed .page-content {
+                width: 100%;
+            }
+            .workspace-layout.sidebar-collapsed {
+                width: 100%;
+                margin-left: 0;
+            }
+            #appContent.sidebar-collapsed .control-panel {
+                margin-left: 8px;
+                margin-right: 8px;
+            }
+            .workspace-sidebar .page-nav {
+                flex-direction: row;
+                overflow-x: auto;
+                width: 100%;
+            }
+            .workspace-sidebar .page-toggle {
+                width: auto;
+                min-width: max-content;
+                white-space: nowrap;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="dbToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body font-weight-bold">
+                Status: Database Terhubung! Data berhasil dimuat.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+        <img class="login-brand" src="https://lh3.googleusercontent.com/d/1ZxgZGywNjf2vICtCMUE7KYFPS9ltAwlL" alt="POS IND Logo">
+        <div class="login-title">LAPORAN PIUTANG KC ENDE 86300</div>
+        <div class="login-subtitle">Masuk ke aplikasi untuk mengelola Laporan Piutang.</div>
+
+        <div class="mb-3">
+            <label class="form-label" for="loginUsername">Username</label>
+            <input id="loginUsername" class="form-control" type="text" autocomplete="username" placeholder="Masukkan username">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="loginPassword">Password</label>
+            <input id="loginPassword" class="form-control" type="password" autocomplete="current-password" placeholder="Masukkan password">
+        </div>
+        <div class="mb-3 text-danger" id="loginError" style="display:none;"></div>
+        <button class="btn btn-primary btn-login" type="button" onclick="attemptLogin()">Masuk Aplikasi</button>
+        <div class="login-footer">Role: superuser / admin / user</div>
+    </div>
+</div>
+
+<div id="landingOverlay" class="landing-overlay">
+    <div class="landing-card">
+        <img class="landing-logo" src="https://lh3.googleusercontent.com/d/1ZxgZGywNjf2vICtCMUE7KYFPS9ltAwlL" alt="POS IND Logo">
+        <div class="landing-title">LAPORAN PIUTANG KC ENDE 86300</div>
+        <div class="landing-subtitle">Selamat Datang di Sistem Pelaporan Piutang.</div>
+        <div class="landing-user">Hai, <span id="landingUserName"></span></div>
+        <div class="landing-text">Menu ini membantu Anda mengakses ringkasan piutang, mengatur nomor surat, dan melihat data korporat dengan mudah. Ketuk Mulai untuk melanjutkan ke aplikasi.</div>
+        <button class="btn btn-primary" type="button" onclick="startApplication()">Mulai</button>
+        <div class="landing-notice">Gunakan tombol logout untuk keluar dan kembali ke halaman login.</div>
+    </div>
+</div>
+
+<!-- Additional Page (will be inserted under Surat) -->
+
+
+
+<div id="appContent" style="display:none;">
+<header class="app-topbar no-print">
+    <button type="button" class="topbar-menu" onclick="toggleSidebar()" aria-label="Tampilkan atau sembunyikan sidebar" title="Menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    <span class="topbar-title">Laporan Piutang KC Ende 86300</span>
+    <span class="topbar-subtitle">Sistem Pelaporan Piutang</span>
+</header>
+<div class="control-panel no-print">
+        
+        <div class="d-flex flex-grow-1 flex-wrap gap-2 align-items-end">
+            <div id="panelIdKorporat" style="flex: 2; min-width: 180px;">
+                <label for="selectIdPelanggan" class="form-label font-weight-bold mb-1" style="font-size: 11px;">Pilih ID Pelanggan:</label>
+                <select id="selectIdPelanggan" class="form-select form-select-sm" onchange="renderTabel(); populateAdditionalTable()">
+                    <option value="">Memuat data...</option>
+                </select>
+            </div>
+            
+            <div id="panelBulan" style="flex: 1; min-width: 100px;">
+                <label for="selectBulan" class="form-label font-weight-bold mb-1" style="font-size: 11px;">Pilih Bulan:</label>
+                <select id="selectBulan" class="form-select form-select-sm" onchange="updateNomorSuratPeriode(); renderTabel(); populateAdditionalTable()">
+                    <option value="0">Januari</option>
+                    <option value="1">Februari</option>
+                    <option value="2">Maret</option>
+                    <option value="3" selected>April</option>
+                    <option value="4">Mei</option>
+                    <option value="5">Juni</option>
+                    <option value="6">Juli</option>
+                    <option value="7">Agustus</option>
+                    <option value="8">September</option>
+                    <option value="9">Oktober</option>
+                    <option value="10">November</option>
+                    <option value="11">Desember</option>
+                </select>
+            </div>
+            <div id="panelTahun" style="flex: 1; min-width: 80px;">
+                <label for="inputTahun" class="form-label font-weight-bold mb-1" style="font-size: 11px;">Tahun:</label>
+                <input type="number" id="inputTahun" class="form-control form-control-sm" value="2026" min="2000" max="2100" onchange="updateNomorSuratPeriode(); renderTabel(); populateAdditionalTable()">
+            </div>
+            <div id="panelTanggalInvoice" style="flex: 1; min-width: 125px;">
+                <label for="inputTanggalInvoice" class="form-label font-weight-bold mb-1" style="font-size: 11px;">Tanggal Invoice:</label>
+                <input type="date" id="inputTanggalInvoice" class="form-control form-control-sm" onchange="updateSuratTagihan(); updateInvoicePage()">
+            </div>
+            <div id="panelNomorSurat" style="flex: 0 1 270px; min-width: 245px;">
+                <label class="form-label font-weight-bold mb-1" style="font-size: 11px;">Nomor Surat:</label>
+                <div class="d-flex gap-1">
+                    <input type="text" id="inputNomorUrutSurat" class="form-control form-control-sm" value="" inputmode="numeric" autocomplete="off" aria-label="Nomor urut surat" oninput="updateSuratTagihan(); updateInvoicePage()">
+                    <input type="text" id="inputNomorSurat" class="form-control form-control-sm" value="/Penjualan/Korporat/0426" aria-label="Awalan dan periode nomor surat" readonly>
+                </div>
+            </div>
+        </div>
+        
+        <div class="d-flex gap-2 justify-content-end align-items-center mt-2">
+            <button id="btnRefreshData" class="btn-custom-icon btn-sheets-icon" onclick="refreshData()" title="Refresh Data">
+                <i class="fa-solid fa-rotate"></i>
+            </button>
+            <button id="buttonBukaSpreadsheet" class="btn-custom-icon btn-sheets-icon" onclick="bukaSpreadsheet()" title="Buka Sheets">
+                <i class="fa-regular fa-folder-open"></i>
+            </button>
+            <button id="btnUploadCsv" class="btn-custom-icon btn-upload-icon" onclick="document.getElementById('csvInput').click()" title="Upload CSV Data Transaksi">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+            </button>
+            <div class="btn-group">
+                <button id="btnPrint" type="button" class="btn-custom-icon btn-print-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Cetak Laporan">
+                    <i class="fa-solid fa-print"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#" onclick="cetakKePdf('both'); return false;">Print Semua</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="cetakKePdf('page1'); return false;">Invoice</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="cetakKePdf('page2'); return false;">Rekap transaksi</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="cetakKePdf('page3'); return false;">Rincian Transaksi</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="cetakKePdf('page4'); return false;">Perhitungan PPH 23</a></li>
+                </ul>
+            </div>
+            <button id="btnExportExcel" class="btn-custom-icon btn-sheets-icon" onclick="exportAdditionalToCSV()" title="Export Excel">
+                <i class="fa-solid fa-file-export"></i>
+            </button>
+            <button id="btnWA" class="btn-custom-icon btn-wa-icon" onclick="kirimKeWhatsApp()" title="Kirim WA">
+                <i class="fa-brands fa-whatsapp"></i>
+            </button>
+            <button id="btnLogout" class="btn-custom-icon btn-custom-icon btn-upload-icon" onclick="logout()" title="Logout" style="display:none;">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+        <div id="loggedInfo" class="role-info text-end" style="display:none;">
+            <strong>Login:</strong> <span id="loggedUserName"></span> (<span id="loggedRole"></span>)
+        </div>
+
+    
+<div class="mt-2 w-100">
+    <input type="file" id="csvInput" accept=".csv" multiple hidden>
+    <div class="progress" style="height: 16px; border-radius: 6px; overflow: hidden;">
+        <div id="uploadProgress" class="progress-bar progress-bar-striped progress-bar-animated"
+             style="width:0%">0%</div>
+    </div>
+</div>
+
+</div>
+</div>
+
+<div class="workspace-layout">
+    <aside class="workspace-sidebar no-print">
+        <div class="page-nav-wrapper" aria-label="Navigasi Halaman Laporan">
+            <div class="page-nav" role="group">
+                <button type="button" id="btnPage1" class="page-toggle active" onclick="setActivePage(1)">Invoice</button>
+                <button type="button" id="btnPage2" class="page-toggle" onclick="setActivePage(2)">Rekap transaksi</button>
+                <button type="button" id="btnPage3" class="page-toggle" onclick="setActivePage(3)">Rincian Transaksi</button>
+                <button type="button" id="btnPage4" class="page-toggle" onclick="setActivePage(4)">Perhitungan PPH 23</button>
+            </div>
+        </div>
+    </aside>
+    <main class="page-content">
+
+<div class="page-section page-2">
+<div class="report-container">
+    <div class="header-title">
+
+        REKAP TRANSAKSI PENGIRIMAN DOKUMEN DAN PAKET
+        <div class="header-meta-grid">
+            <div>Nama Pelanggan</div>
+            <div>: <span id="headerNamaKorporat">-</span></div>
+            
+            <div>ID Pelanggan</div>
+            <div>: <span id="headerKode">-</span></div>
+            
+            <div>Periode Transaksi</div>
+            <div>: <span id="headerBulan">-</span></div>
+        </div>
+    </div>
+
+    <table class="table-report">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Tgl. Transaksi</th>
+                <th>Jml. Transaksi</th>
+                <th>Biaya Pengiriman</th>
+                <th>PPN</th>
+                <th>HTNB</th>
+                <th>Total Biaya Pengiriman</th>
+            </tr>
+        </thead>
+        <tbody id="tabelBody"></tbody>
+    </table>
+
+    <div class="info-saldo-section">
+        <div class="title-saldo">INFORMASI SALDO</div>
+        <table>
+            <tr class="saldo-lalu-row">
+                <td class="label-saldo">SALDO BULAN LALU</td>
+                <td class="rp-saldo">Rp.</td>
+                <td class="nilai-saldo" id="saldoLalu">-</td>
+            </tr>
+            <tr>
+                <td class="label-saldo">PENGIRIMAN SURAT DAN PAKET BULAN INI</td>
+                <td class="rp-saldo">Rp.</td>
+                <td class="nilai-saldo" id="saldoPengiriman">-</td>
+            </tr>
+            <tr>
+                <td class="label-saldo">BIAYA PACKING</td>
+                <td class="rp-saldo">Rp.</td>
+                <td class="nilai-saldo" id="biayaPacking">-</td>
+            </tr>
+            <tr>
+                <td class="label-saldo">DENDA KETERLAMBATAN PELUNASAN</td>
+                <td class="rp-saldo">Rp.</td>
+                <td class="nilai-saldo" id="pelunasanTagihan">-</td>
+            </tr>
+            <tr class="highlight-box">
+                <td class="label-saldo">SALDO AKHIR</td>
+                <td class="rp-saldo">Rp.</td>
+                <td class="nilai-saldo" id="saldoAkhir">-</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="ttd-section">
+        <table class="ttd-table">
+            <tr>
+                <td>
+                    <p class="mb-0">Mengetahui</p>
+                    <p class="mb-0">Spv. Adminkug dan Dukum</p>
+                    <div class="ttd-space"></div> <p class="ttd-nama">Maria Pratiwi Laka</p>
+                    <p class="nippos-text">Nippos: 987413417</p>
+                </td>
+                <td>
+                    <p class="mb-0">Yang Membuat<br>Spv. Penjualan Bisnis Korporat</p>
+                    <div class="ttd-space"></div> <p class="ttd-nama">EDISON LEONARD</p>
+                    <p class="nippos-text">Nippos: 984413376</p>
+                </td>
+            </tr>
+        </table>
+</div>
+</div>
+
+</div>
+
+<div class="page-section page-1 active">
+    <div class="invoice-reference-page">
+        <div hidden>
+            <span id="invoiceNomor"></span><span id="invoiceRekening"></span><span id="invoiceNpwp"></span>
+            <input id="invoiceTanggal"><input id="invoiceJatuhTempo"><input id="invoiceTaxRate" value="0">
+            <input id="invoiceDiscount" value="0"><input id="invoiceDendaRate" value="0">
+            <span id="suratNomor"></span><span id="suratTanggal"></span><span id="suratPeriodePerihal"></span>
+            <span id="suratNamaKorporat"></span><span id="suratNamaKorporatPks"></span><span id="suratNoPksPos"></span>
+            <span id="suratNoPksKorporat"></span><span id="suratSaldoAkhir"></span><span id="suratTerbilang"></span>
+        </div>
+        <div class="invoice-reference-header">
+            <img class="invoice-reference-logo" src="PosIND_Main%20Color.png" alt="POS IND">
+            <div class="invoice-reference-form">Form Piutang-2 Cetakan ke : <select id="invoiceCopyNumber" aria-label="Nomor cetakan invoice" onchange="updateInvoicePage()"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="invoice-reference-company">
+                <div>PT POS INDONESIA (PERSERO)</div>
+                <div>NPWP : 01.001.620.2-093-000</div>
+                <div>Jl. Banda No. 30 Citarum, Bandung Wetan, Kota Bandung</div>
+                <div>Jawa Barat 40115</div>
+                <div>KANTOR POS ENDE 86300</div>
+            </div>
+        </div>
+
+        <div class="invoice-reference-meta">
+            <div class="invoice-reference-recipient">
+                <div>Pelanggan Yth.</div>
+                <div>Bpk / Ibu Pimpinan</div>
+                <div id="invoiceNamaPelanggan">-</div>
+                <div>(<span id="invoiceKodePelanggan">-</span>)</div>
+            </div>
+            <div class="invoice-reference-details">
+                <strong>INVOICE</strong><span></span><span></span>
+                <span>No. Tagihan</span><span>:</span><span id="invoiceNomorPengantar">-</span>
+                <span>No. PKS</span><span>:</span><span id="invoiceIdPelanggan">-</span>
+                <span>Periode Tagihan</span><span>:</span><span id="invoicePeriode">-</span>
+            </div>
+        </div>
+
+        <div class="invoice-reference-intro">
+            <div>Dengan Hormat,</div>
+            <div>Disampaikan tagihan atas transaksi Bulan <strong id="invoicePeriod">-</strong>, sebesar <strong id="invoiceJumlah">0</strong></div>
+            <div>(<strong><em id="invoiceTerbilang">Nol Rupiah</em></strong>)</div>
+            <div>Rincian Transaksi sebagai berikut :</div>
+        </div>
+
+        <table class="invoice-reference-table">
+            <thead>
+                <tr><th>No</th><th>URAIAN</th><th>Produk</th><th>Jumlah transaksi</th><th>Besar Uang</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1.</td><td>Biaya Pengiriman Bulan <span id="invoicePeriodTable">-</span></td><td>Dok dan Paket</td><td><span id="invoiceUnit">0</span></td><td id="invoiceSubtotal">0</td></tr>
+                <tr><td></td><td>PPN Dokumen dan Paket</td><td></td><td></td><td id="invoicePajak">0</td></tr>
+                <tr class="invoice-highlight"><td></td><td>TOTAL BRUTO</td><td></td><td></td><td id="invoiceBruto">0</td></tr>
+                <tr><td></td><td>DISKON KORPOR 10 %</td><td></td><td></td><td id="invoiceDiskon">0</td></tr>
+                <tr><td></td><td>PPN SETELAH DISKON</td><td></td><td></td><td id="invoicePpnSetelahDiskon">0</td></tr>
+                <tr><td></td><td>HTNB / ASURANSI</td><td></td><td></td><td id="invoiceDenda">0</td></tr>
+                <tr><td></td><td>PPN HTNB</td><td></td><td></td><td id="invoicePpnHtnb">0</td></tr>
+                <tr class="invoice-highlight"><td></td><td>TOTAL PIUTANG NETTING</td><td></td><td></td><td id="invoiceNetting">0</td></tr>
+                <tr><td></td><td>PPH 23 BUPOT ( 2% dari Biaya Pengiriman)</td><td></td><td></td><td id="invoicePph23">0</td></tr>
+                <tr><td></td><td>BIAYA PACKING</td><td></td><td></td><td id="invoicePacking">0</td></tr>
+                <tr><td></td><td>DENDA KETERLAMBATAN PELUNASAN<span id="invoiceLatePenaltyLabel"></span></td><td></td><td></td><td id="invoiceLatePenalty">0</td></tr>
+                <tr class="invoice-highlight"><td></td><td>TOTAL DITRANSFER MITRA</td><td></td><td></td><td id="invoiceTotal">0</td></tr>
+            </tbody>
+        </table>
+
+        <div class="invoice-reference-footer-note">
+            <div>Besarnya biaya tagihan tersebut mohon ditransfer ke rekening sebagai berikut:</div>
+            <div>- BRI : 0024-01-001238-30-3 a/n POS INDONESIA</div>
+            <div>- BRIVA : 1394908130000 a/n P088630000 ENDE</div>
+            <div>- BNI : 54731889 a/n DIVRE 8 KP ENDE</div>
+            <div>- VA BNI : 9885614886300813 a/n 86300 ENDE</div>
+            <div>- MANDIRI : 161-0000-86300-6 a/n POS INDONESIA</div>
+            <div>Mohon konfirmasi ke no <strong>WA: 081339221840</strong> an. <strong>Edison Leonard</strong> dengan melampirkan foto bukti transfer yang bertalian.</div>
+        </div>
+        <div class="invoice-reference-signature">
+            <div><div>Mengetahui,</div><div>Executive Manager,</div><div class="invoice-reference-sign-space"></div><strong>HANNAN</strong><div>Nippos: 983390370</div></div>
+            <div><div id="invoiceReferenceDate">Ende, -</div><div>Spv. Adminkug dan Dukum</div><div class="invoice-reference-sign-space"></div><strong>MARIA PRATIWI LAKA</strong><div>Nippos: 987413417</div></div>
+        </div>
+        <div class="invoice-reference-bottom-notes">
+            <div class="invoice-reference-bottom-notes-title">Catatan :</div>
+            <ul>
+                <li>Nilai tagihan di atas dapat berubah sesuai dengan kesepakatan perpajakan dengan pelanggan yang berstatus Wajib Pungut.</li>
+                <li>Pembayaran setelah tanggal 15 dikenakan denda sebesar 1% dan setelah tanggal 26 dikenakan denda sebesar 2%. Apabila keterlambatan melewati 1 (satu) bulan dari transaksi, dikenakan denda tambahan sebesar 2% dari akumulasi tagihan beserta denda.</li>
+                <li>Abaikan invoice ini jika sudah melakukan pembayaran.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="page-section page-3">
+    <div id="additionalPage" class="report-container">
+        <div class="header-title additional-page-title">
+            RINCIAN TRANSAKSI PENGIRIMAN DOKUMEN DAN PAKET
+            <div class="header-meta-grid">
+                <div>Nama Pelanggan</div>
+                <div>: <span id="detailNamaPelanggan">-</span></div>
+                <div>ID Pelanggan</div>
+                <div>: <span id="detailIdPelanggan">-</span></div>
+                <div>Periode Transaksi</div>
+                <div>: <span id="detailPeriodeTransaksi">-</span></div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered additional-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>No. Resi</th>
+                        <th>Nama Pengirim</th>
+                        <th>Nama Penerima</th>
+                        <th>Alamat</th>
+                        <th>Layanan</th>
+                        <th>Berat</th>
+                        <th>Biaya Kirim</th>
+                        <th>PPN</th>
+                        <th>HTNB</th>
+                        <th>Total Biaya Kirim</th>
+                        <th>Tgl Transaksi</th>
+                    </tr>
+                </thead>
+                <tbody id="additionalTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="page-section page-4">
+    <div class="pph23-page">
+        <div class="pph23-header">
+            <div class="pph23-title">RINCIAN PERHITUNGAN PAJAK PENGIRIMAN DOKUMEN DAN PAKET</div>
+            <div class="pph23-meta">
+                <div>Nama Pelanggan</div><div>: <span id="pph23NamaPelanggan">-</span></div>
+                <div>ID Pelanggan</div><div>: <span id="pph23IdPelanggan">-</span></div>
+                <div>Periode Transaksi</div><div>: <span id="pph23Periode">-</span></div>
+            </div>
+        </div>
+        <table class="pph23-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal Transaksi</th>
+                    <th>No.Doc (SAP)</th>
+                    <th>NPWP</th>
+                    <th>ID Pelanggan</th>
+                    <th>Nama Mitra</th>
+                    <th>Alamat</th>
+                    <th>Keterangan</th>
+                    <th>PENDAPATAN</th>
+                    <th>DPP</th>
+                    <th>PPH 23</th>
+                </tr>
+            </thead>
+            <tbody id="pph23TableBody"></tbody>
+        </table>
+    </div>
+</div>
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+<script src="./invoice-logo-data.js"></script>
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9tDMMZhkV_jMnFwb5Jy2F_je5nA1IpBhXqKkWHabae2hisJ2D2bWkT-aDcPc0fJuofg/exec";
+    const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1uHIj7d68isk1b_O14xY2pGCChqRwRfi08JP5_ysjZ30/edit?usp=sharing";
+    
+    const USER_ROLES = {
+        SUPERUSER: 'superuser',
+        ADMIN: 'admin',
+        USER: 'user'
+    };
+
+    let cloudData = { laporanUtama: [], saldoLalu: [], pelunasan: [], packing: [], users: [] };
+    let customerIds = [];
+    let currentUser = null;
+    let currentRole = '';
+    let apiToken = '';
+    let globalNamaKorporat = ""; 
+    let waSummary = { totalItem: 0, totalBiayaNum: 0, biayaPackingNum: 0, saldoAkhirNum: 0 };
+    let invoiceSummary = { jumlahUnit: 0, tarifPerUnit: 0, ongkir: 0, diskon: 0, htnb: 0, pajak: 0, ppnHtnb: 0, total: 0 };
+    
+    const namaBulanIndo = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+    const namaBulanEng = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const pelangganPph23Dikecualikan = new Set([
+        "BANKBNI08863A",
+        "LNKPPN08863A",
+        "SOSPLAN08863A",
+        "LNPNENDE08863A",
+        "LNKARANTIN08863A",
+        "LNMAPAG05863A",
+        "LNMAPAG05863B",
+        "LNMAPN05863A",
+        "LNPERURI03413B",
+        "ASRRAHARJA05863A",
+        "INDSUCOFIND07600B",
+        "DAGPRACI05863A",
+        "BANKBRI08863A",
+        "BANKMANDIRI08863A",
+        "LOGKOPANSIK05863A"
+    ]);
+
+    function parseTanggal(value) {
+        if (!value) return null;
+
+        const raw = value.toString().trim();
+        if (/^\d{10,13}$/.test(raw)) {
+            const timestamp = Number(raw) * (raw.length === 10 ? 1000 : 1);
+            const date = new Date(timestamp);
+            return isNaN(date.getTime()) ? null : date;
+        }
+
+        let match = raw.match(/^(\d{2})(\d{2})(\d{4})$/);
+        if (match) {
+            return new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
+        }
+
+        match = raw.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
+        if (match) {
+            return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+        }
+
+        match = raw.match(/^(\d{1,2})[-/\s]([A-Za-z]{3,}|\d{1,2})[-/\s](\d{4})$/);
+        if (match) {
+            const monthIndex = monthToIndex(match[2]);
+            if (monthIndex >= 0) {
+                return new Date(Number(match[3]), monthIndex, Number(match[1]));
+            }
+        }
+
+        const parsed = new Date(raw);
+        return isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    function formatTanggalSingkat(value) {
+        const date = parseTanggal(value);
+        if (!date) return '';
+        return [
+            String(date.getDate()).padStart(2, '0'),
+            String(date.getMonth() + 1).padStart(2, '0'),
+            date.getFullYear()
+        ].join('-');
+    }
+
+    function monthToIndex(value) {
+        const raw = value.toString().trim().toLowerCase();
+        if (/^\d+$/.test(raw)) {
+            const index = Number(raw) - 1;
+            return index >= 0 && index <= 11 ? index : -1;
+        }
+
+        const months = {
+            jan: 0, januari: 0, january: 0,
+            feb: 1, februari: 1, february: 1,
+            mar: 2, maret: 2, march: 2,
+            apr: 3, april: 3,
+            mei: 4, may: 4,
+            jun: 5, juni: 5, june: 5,
+            jul: 6, juli: 6, july: 6,
+            agu: 7, agustus: 7, aug: 7, august: 7,
+            sep: 8, september: 8,
+            okt: 9, oktober: 9, oct: 9,
+            nov: 10, november: 10,
+            des: 11, desember: 11, dec: 11
+        };
+
+        return months[raw] !== undefined ? months[raw] : (months[raw.substring(0, 3)] ?? -1);
+    }
+
+    function angkaBersih(value) {
+        return (value || "0").toString().replace(/[^\d-]/g, "") || "0";
+    }
+
+    function terlihatSepertiIdKorporat(value) {
+        return /^[A-Z0-9]+$/.test((value || "").toString().trim().toUpperCase());
+    }
+
+    function formatRupiah(value) {
+        return (parseInt(value) || 0).toLocaleString('id-ID');
+    }
+
+    function formatDiscountInput(input) {
+        const rawValue = input.value;
+        const cursorPosition = input.selectionStart ?? rawValue.length;
+        const digitsBeforeCursor = rawValue.slice(0, cursorPosition).replace(/\D/g, '').length;
+        const digits = rawValue.replace(/\D/g, '');
+        input.value = digits ? Number(digits).toLocaleString('id-ID') : '';
+
+        let nextCursorPosition = 0;
+        let digitsCounted = 0;
+        while (nextCursorPosition < input.value.length && digitsCounted < digitsBeforeCursor) {
+            if (/\d/.test(input.value[nextCursorPosition])) digitsCounted++;
+            nextCursorPosition++;
+        }
+        input.setSelectionRange(nextCursorPosition, nextCursorPosition);
+    }
+
+    function formatTanggalAkhirBulan(bulanIndex, tahun) {
+        const akhirBulan = new Date(tahun, bulanIndex + 1, 0).getDate();
+        const namaBulanSurat = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return `Ende, ${akhirBulan} ${namaBulanSurat[bulanIndex]} ${tahun}`;
+    }
+
+    function formatTanggalInvoice(dateValue) {
+        const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateValue || "");
+        if (!match) return "";
+        const [, tahun, bulan, tanggal] = match;
+        const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return `${Number(tanggal)} ${namaBulan[Number(bulan) - 1].toUpperCase()} ${tahun}`;
+    }
+
+    function updateJatuhTempoDariInvoice(invoiceDateInput, dueDateInput) {
+        if (!invoiceDateInput || !dueDateInput) return;
+
+        const invoiceDateText = invoiceDateInput.value.trim();
+        if (!invoiceDateText || invoiceDateInput.dataset.dueDateSource === invoiceDateText) return;
+
+        const invoiceDate = parseTanggal(invoiceDateText);
+        if (!invoiceDate) return;
+
+        invoiceDate.setDate(invoiceDate.getDate() + 15);
+        dueDateInput.value = `${invoiceDate.getDate()} ${namaBulanIndo[invoiceDate.getMonth()]} ${invoiceDate.getFullYear()}`;
+        invoiceDateInput.dataset.dueDateSource = invoiceDateText;
+    }
+
+    function kapitalAwalKalimat(text) {
+        if (!text) return "";
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    function kapitalSetiapKata(text) {
+        return (text || "").replace(/\b\w/g, huruf => huruf.toUpperCase());
+    }
+
+    function terbilang(nilai) {
+        nilai = Math.floor(Math.abs(parseInt(nilai) || 0));
+        const angka = ["", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas"];
+
+        if (nilai < 12) return angka[nilai];
+        if (nilai < 20) return terbilang(nilai - 10) + " belas";
+        if (nilai < 100) return terbilang(Math.floor(nilai / 10)) + " puluh" + (nilai % 10 ? " " + terbilang(nilai % 10) : "");
+        if (nilai < 200) return "seratus" + (nilai % 100 ? " " + terbilang(nilai - 100) : "");
+        if (nilai < 1000) return terbilang(Math.floor(nilai / 100)) + " ratus" + (nilai % 100 ? " " + terbilang(nilai % 100) : "");
+        if (nilai < 2000) return "seribu" + (nilai % 1000 ? " " + terbilang(nilai - 1000) : "");
+        if (nilai < 1000000) return terbilang(Math.floor(nilai / 1000)) + " ribu" + (nilai % 1000 ? " " + terbilang(nilai % 1000) : "");
+        if (nilai < 1000000000) return terbilang(Math.floor(nilai / 1000000)) + " juta" + (nilai % 1000000 ? " " + terbilang(nilai % 1000000) : "");
+        return terbilang(Math.floor(nilai / 1000000000)) + " milyar" + (nilai % 1000000000 ? " " + terbilang(nilai % 1000000000) : "");
+    }
+
+    function terbilangRupiah(nilai) {
+        const angka = parseInt(nilai) || 0;
+        if (angka === 0) return "Nol Rupiah";
+        return kapitalSetiapKata(terbilang(angka) + " rupiah");
+    }
+
+    function showLoginError(message) {
+        const error = document.getElementById('loginError');
+        if (!error) return;
+        error.innerText = message || 'Login gagal.';
+        error.style.display = 'block';
+    }
+
+    function clearLoginError() {
+        const error = document.getElementById('loginError');
+        if (!error) return;
+        error.innerText = '';
+        error.style.display = 'none';
+    }
+
+    function showLoginOverlay() {
+        hideAppContent();
+        const overlay = document.getElementById('loginOverlay');
+        if (overlay) overlay.style.display = 'flex';
+    }
+
+    function hideLoginOverlay() {
+        const overlay = document.getElementById('loginOverlay');
+        if (overlay) overlay.style.display = 'none';
+    }
+
+    function showLandingOverlay() {
+        const overlay = document.getElementById('landingOverlay');
+        const name = document.getElementById('landingUserName');
+        if (name && currentUser) {
+            name.innerText = currentUser.displayName || currentUser.username;
+        }
+        if (overlay) overlay.style.display = 'flex';
+    }
+
+
+    function parseNumberForCalc(val) {
+        if (!val && val !== 0) return 0;
+        const cleaned = (val || '').toString().replace(/[^0-9.-]/g, '');
+        return parseFloat(cleaned) || 0;
+    }
+
+    function populateAdditionalTable() {
+        const tbody = document.getElementById('additionalTableBody');
+        tbody.innerHTML = '';
+
+        const targetId = document.getElementById('selectIdPelanggan').value.trim().toUpperCase();
+        const bulanDipilih = parseInt(document.getElementById('selectBulan').value);
+        const tahunDipilih = parseInt(document.getElementById('inputTahun').value);
+        const targetNama = globalNamaKorporat || '-';
+        document.getElementById('detailNamaPelanggan').innerText = targetNama;
+        document.getElementById('detailIdPelanggan').innerText = targetId || '-';
+        document.getElementById('detailPeriodeTransaksi').innerText =
+            `${namaBulanIndo[bulanDipilih]} ${tahunDipilih}`;
+
+        const data = Array.isArray(cloudData.detailTransaksi) ? cloudData.detailTransaksi : [];
+
+        const rows = data.filter(r => {
+            if (!r.idPelanggan) return false;
+            if (r.idPelanggan.toString().trim().toUpperCase() !== targetId) return false;
+            const dt = parseTanggal(r.tglTrx);
+            if (!dt) return false;
+            return dt.getMonth() === bulanDipilih && dt.getFullYear() === tahunDipilih;
+        });
+
+        rows.sort((a,b) => {
+            const da = parseTanggal(a.tglTrx) || new Date(0);
+            const db = parseTanggal(b.tglTrx) || new Date(0);
+            return da - db;
+        });
+
+        rows.forEach((row, idx) => {
+            const ongkir = parseNumberForCalc(row.ongkir);
+            const ppn = parseNumberForCalc(row.ppn);
+            const htnb = parseNumberForCalc(row.htnb);
+            const total = parseNumberForCalc(row.total);
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${idx + 1}</td>
+                <td>${escapeHtml(row.noResi || '')}</td>
+                <td>${escapeHtml(row.namaPengirim || '')}</td>
+                <td>${escapeHtml(row.namaPenerima || '')}</td>
+                <td>${escapeHtml(row.kota || '')}</td>
+                <td>${escapeHtml(row.layanan || '')}</td>
+                <td class="text-num">${escapeHtml(row.berat || '')}</td>
+                <td class="text-num">${formatNumber(ongkir)}</td>
+                <td class="${ppn === 0 ? 'text-center' : 'text-num'}">${ppn === 0 ? '-' : formatNumber(ppn)}</td>
+                <td class="${htnb === 0 ? 'text-center' : 'text-num'}">${htnb === 0 ? '-' : formatNumber(htnb)}</td>
+                <td class="text-num">${formatNumber(total)}</td>
+                <td class="text-center">${formatTanggalSingkat(row.tglTrx)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        if (rows.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="12" class="text-center text-muted">Tidak ada data untuk ID terpilih.</td></tr>';
+        }
+        populatePph23Table();
+    }
+
+    function populatePph23Table() {
+        const tbody = document.getElementById('pph23TableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        const targetId = document.getElementById('selectIdPelanggan').value.trim().toUpperCase();
+        const bulanDipilih = parseInt(document.getElementById('selectBulan').value, 10);
+        const tahunDipilih = parseInt(document.getElementById('inputTahun').value, 10);
+        const data = Array.isArray(cloudData.laporanUtama) ? cloudData.laporanUtama : [];
+        const noSuratRows = Array.isArray(cloudData.noSurat) ? cloudData.noSurat : [];
+        const pph23Dikecualikan = pelangganPph23Dikecualikan.has(targetId);
+        const pph23Header = document.querySelector('.pph23-table thead th:last-child');
+        if (pph23Header) pph23Header.hidden = pph23Dikecualikan;
+        const noSuratItem = noSuratRows.find(row =>
+            (row.idPelanggan || '').toString().trim().toUpperCase() === targetId
+        ) || {};
+        const namaBulan = Number.isInteger(bulanDipilih) ? namaBulanIndo[bulanDipilih] : '-';
+
+        document.getElementById('pph23NamaPelanggan').innerText = globalNamaKorporat || '-';
+        document.getElementById('pph23IdPelanggan').innerText = targetId || '-';
+        document.getElementById('pph23Periode').innerText =
+            `${namaBulan} ${Number.isFinite(tahunDipilih) ? tahunDipilih : '-'}`;
+
+        const rows = data.filter(row => {
+            if (!row.idPelanggan || row.idPelanggan.toString().trim().toUpperCase() !== targetId) return false;
+            const tanggal = parseTanggal(row.tglTrx);
+            return tanggal &&
+                tanggal.getMonth() === bulanDipilih &&
+                tanggal.getFullYear() === tahunDipilih;
+        }).sort((a, b) => parseTanggal(a.tglTrx) - parseTanggal(b.tglTrx));
+
+        let totalPendapatan = 0;
+        let totalDpp = 0;
+        let totalPph23 = 0;
+
+        rows.forEach((row, index) => {
+            const tanggalTrx = parseTanggal(row.tglTrx);
+            const pendapatan = parseNumberForCalc(row.ongkir);
+            const dpp = Math.round(pendapatan * (100 / 111));
+            const pph23 = pph23Dikecualikan ? 0 : Math.round(pendapatan * 0.02);
+            totalPendapatan += pendapatan;
+            totalDpp += dpp;
+            totalPph23 += pph23;
+            const npwp = (noSuratItem.npwp || row.npwp || '').toString().trim();
+            const alamat = (noSuratItem.alamat || row.alamat || '').toString().trim();
+            const nama = (row.namaKorporat || '').toString().replace(/_/g, ' ');
+            const tanggalFormatted = tanggalTrx
+                ? `${String(tanggalTrx.getDate()).padStart(2, '0')} ${new Intl.DateTimeFormat('en', { month: 'short' }).format(tanggalTrx)} ${tanggalTrx.getFullYear()}`
+                : '';
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${tanggalFormatted}</td>
+                <td><input aria-label="No.Doc SAP" data-field="nodoc" value=""></td>
+                <td><input aria-label="NPWP" data-field="npwp" value="${escapeHtml(npwp)}"></td>
+                <td>${escapeHtml(targetId)}</td>
+                <td>${escapeHtml(nama)}</td>
+                <td><input aria-label="Alamat" data-field="alamat" value="${escapeHtml(alamat)}"></td>
+                <td><input aria-label="Keterangan" data-field="keterangan" value=""></td>
+                <td>${formatNumber(pendapatan)}</td>
+                <td>${formatNumber(dpp)}</td>
+                <td${pph23Dikecualikan ? ' hidden' : ''}>${formatNumber(pph23)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        if (!rows.length) {
+            tbody.innerHTML = `<tr><td colspan="${pph23Dikecualikan ? 10 : 11}" class="text-center text-muted">${
+                targetId ? 'Tidak ada data untuk ID dan periode terpilih.' : 'Silakan pilih ID Pelanggan terlebih dahulu.'
+            }</td></tr>`;
+            return;
+        }
+
+        const totalRow = document.createElement('tr');
+        totalRow.className = 'fw-bold pph23-total-row';
+        totalRow.innerHTML = `
+            <td colspan="8" class="text-end">TOTAL</td>
+            <td>${formatNumber(totalPendapatan)}</td>
+            <td>${formatNumber(totalDpp)}</td>
+            <td${pph23Dikecualikan ? ' hidden' : ''}>${formatNumber(totalPph23)}</td>
+        `;
+        tbody.appendChild(totalRow);
+    }
+
+    function exportAdditionalToCSV() {
+        const rows = [];
+        const header = ['No.','No. Resi','Nama Pengirim','Nama Penerima','Alamat','Layanan','Berat','Biaya Kirim','PPN','HTNB','Total Biaya Kirim','Tgl Transaksi'];
+        rows.push(header);
+        const tbody = document.getElementById('additionalTableBody');
+        if (!tbody) return;
+        const trList = tbody.querySelectorAll('tr');
+        trList.forEach(tr => {
+            const cells = tr.children;
+            if (!cells || cells.length < 12) return;
+            rows.push(Array.from(cells, cell => cell.innerText.trim()));
+        });
+
+        if (rows.length <= 1) { alert('Tidak ada data untuk diekspor.'); return; }
+
+        const csvContent = rows.map(r => r.map(cell => '"' + String(cell).replace(/"/g,'""') + '"').join(',')).join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const id = document.getElementById('selectIdPelanggan').value || 'ID';
+        const bulan = document.getElementById('selectBulan').value;
+        const tahun = document.getElementById('inputTahun').value;
+        a.download = `halaman3_${id}_${bulan}_${tahun}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function formatNumber(num) {
+        return (Math.round((num || 0) * 100) / 100).toLocaleString('en-US');
+    }
+
+    function escapeHtml(text) {
+        if (text === null || text === undefined) return '';
+        return String(text).replace(/[&<>"]+/g, function (s) {
+            return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]);
+        });
+    }
+
+    function hideLandingOverlay() {
+        const overlay = document.getElementById('landingOverlay');
+        if (overlay) overlay.style.display = 'none';
+    }
+
+    function showAppContent() {
+        const app = document.getElementById('appContent');
+        if (app) app.style.display = 'block';
+    }
+
+    function hideAppContent() {
+        const app = document.getElementById('appContent');
+        if (app) app.style.display = 'none';
+    }
+
+    function showToast(message, type = 'success') {
+        const toastElement = document.getElementById('dbToast');
+        if (!toastElement) return;
+        const body = toastElement.querySelector('.toast-body');
+        if (body) body.innerText = message || '';
+        toastElement.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-info');
+        toastElement.classList.add(type === 'danger' ? 'bg-danger' : type === 'warning' ? 'bg-warning' : type === 'info' ? 'bg-info' : 'bg-success');
+        const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+        toast.show();
+    }
+
+    function updateRoleUI() {
+        const isSuper = currentRole === USER_ROLES.SUPERUSER;
+        const isAdmin = currentRole === USER_ROLES.ADMIN;
+        const isUser = currentRole === USER_ROLES.USER;
+        const isLoggedIn = Boolean(currentUser);
+
+        document.getElementById('buttonBukaSpreadsheet').style.display = isSuper ? 'inline-flex' : 'none';
+        // debug-panel removed
+        document.getElementById('panelIdKorporat').style.display = (isSuper || isAdmin || isUser) ? 'block' : 'none';
+        document.getElementById('panelBulan').style.display = (isSuper || isAdmin || isUser) ? 'block' : 'none';
+        document.getElementById('panelTahun').style.display = (isSuper || isAdmin || isUser) ? 'block' : 'none';
+        document.getElementById('panelNomorSurat').style.display = (isSuper || isAdmin) ? 'block' : 'none';
+        document.getElementById('btnPrint').style.display = (isSuper || isAdmin) ? 'inline-flex' : 'none';
+        document.getElementById('btnWA').style.display = (isSuper || isAdmin) ? 'inline-flex' : 'none';
+        document.getElementById('btnExportExcel').style.display = (isSuper || isAdmin) ? 'inline-flex' : 'none';
+        document.getElementById('btnLogout').style.display = isLoggedIn ? 'inline-flex' : 'none';
+        document.getElementById('btnUploadCsv').style.display = (isSuper || isAdmin) ? 'inline-flex' : 'none';
+
+        const reportContainer = document.querySelector('.report-container');
+        const suratContainer = document.querySelector('.surat-container');
+        const showAppContent = isSuper || isAdmin || isUser;
+        if (reportContainer) reportContainer.style.display = showAppContent ? 'block' : 'none';
+        if (suratContainer) suratContainer.style.display = showAppContent ? 'block' : 'none';
+
+        const loggedInfo = document.getElementById('loggedInfo');
+        if (loggedInfo) {
+            loggedInfo.style.display = isLoggedIn ? 'block' : 'none';
+            document.getElementById('loggedUserName').innerText = currentUser ? currentUser.displayName : '';
+            document.getElementById('loggedRole').innerText = currentUser ? currentUser.role : '';
+        }
+    }
+
+    function logout() {
+        currentUser = null;
+        currentRole = '';
+        apiToken = '';
+        hideLandingOverlay();
+        hideAppContent();
+        showLoginOverlay();
+        updateRoleUI();
+        showToast('Anda berhasil logout.', 'info');
+    }
+
+    function startApplication() {
+        hideLandingOverlay();
+        showAppContent();
+        updateRoleUI();
+        showToast(`Selamat datang ${currentUser ? currentUser.displayName : 'Pengguna'}!`, 'success');
+    }
+
+    async function attemptLogin() {
+        clearLoginError();
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        if (!username || !password) {
+            showLoginError('Username dan password wajib diisi.');
+            return;
+        }
+
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'login', username, password })
+            });
+
+            const responseText = await response.text();
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (parseError) {
+                throw new Error('Respons Apps Script bukan JSON. Periksa deployment Web App.');
+            }
+
+            if (!response.ok) {
+                throw new Error(result.message || `Login gagal (HTTP ${response.status}).`);
+            }
+            if (!result.success) {
+                showLoginError(result.message || 'Login gagal.');
+                return;
+            }
+            if (!result.token || !result.user) {
+                throw new Error('Respons login tidak menyertakan sesi yang valid.');
+            }
+
+            apiToken = result.token;
+            currentUser = result.user;
+            currentRole = currentUser.role || '';
+            hideLoginOverlay();
+            updateRoleUI();
+            showLandingOverlay();
+
+            // Always fetch data for all roles including USER
+            await ambilDataDariSheets();
+        } catch (err) {
+            console.error(err);
+            showLoginError(err.message || 'Terjadi kesalahan saat login.');
+        }
+    }
+
+    function cariNoSurat(targetIdPelanggan) {
+        const rows = Array.isArray(cloudData.noSurat) ? cloudData.noSurat : [];
+        return rows.find(row => (row.idPelanggan || "").trim().toUpperCase() === targetIdPelanggan) || {};
+    }
+
+    function ambilFieldNoSurat(row, daftarKey) {
+        for (const key of daftarKey) {
+            if (row[key]) return row[key];
+        }
+
+        const normalizedKeys = Object.keys(row).reduce((acc, key) => {
+            acc[key.toLowerCase()] = row[key];
+            return acc;
+        }, {});
+
+        for (const key of daftarKey) {
+            const value = normalizedKeys[key.toLowerCase()];
+            if (value) return value;
+        }
+
+        return "-";
+    }
+
+    function updateNomorSuratPeriode() {
+        const monthInput = document.getElementById("selectBulan");
+        const yearInput = document.getElementById("inputTahun");
+        const month = Number(monthInput.value) + 1;
+        const year = Number(yearInput.value);
+        if (!Number.isInteger(month) || month < 1 || month > 12 ||
+            !Number.isInteger(year) || year < 2000 || year > 2100) {
+            return;
+        }
+
+        const monthYear = `${String(month).padStart(2, "0")}${String(year).slice(-2)}`;
+        document.getElementById("inputNomorSurat").value = `/Penjualan/Korporat/${monthYear}`;
+    }
+
+    function getNomorSurat() {
+        const nomorUrut = document.getElementById("inputNomorUrutSurat").value.trim();
+        const bagianTetap = document.getElementById("inputNomorSurat").value;
+        return nomorUrut ? `${nomorUrut}${bagianTetap}` : bagianTetap;
+    }
+
+    function updateSuratTagihan() {
+        const bulanDipilih = parseInt(document.getElementById("selectBulan").value);
+        const tahunDipilih = parseInt(document.getElementById("inputTahun").value);
+        const targetIdPelanggan = document.getElementById("selectIdPelanggan").value.trim().toUpperCase();
+        const nomorSurat = getNomorSurat();
+        const noSurat = cariNoSurat(targetIdPelanggan);
+        const namaKorporat = globalNamaKorporat || "-";
+        const saldoAkhir = invoiceSummary.total ?? waSummary.saldoAkhirNum ?? 0;
+        document.getElementById("suratNomor").innerText = nomorSurat;
+        const invoiceNomorPengantar = document.getElementById("invoiceNomorPengantar");
+        if (invoiceNomorPengantar) {
+            invoiceNomorPengantar.innerText = nomorSurat;
+        }
+        const suratTanggalText = formatTanggalAkhirBulan(bulanDipilih, tahunDipilih);
+        document.getElementById("suratTanggal").innerText = suratTanggalText;
+        const invoiceDatePicker = document.getElementById("inputTanggalInvoice");
+        if (invoiceDatePicker && !invoiceDatePicker.value && Number.isFinite(tahunDipilih) && Number.isInteger(bulanDipilih)) {
+            const lastDay = new Date(tahunDipilih, bulanDipilih + 1, 0).getDate();
+            invoiceDatePicker.value = `${tahunDipilih}-${String(bulanDipilih + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+        }
+        const invoiceDateInput = document.getElementById("invoiceTanggal");
+        if (invoiceDateInput) {
+            invoiceDateInput.value = formatTanggalInvoice(invoiceDatePicker && invoiceDatePicker.value) || suratTanggalText.replace(/^Ende,\s*/i, "").toUpperCase();
+        }
+        updateJatuhTempoDariInvoice(invoiceDateInput, document.getElementById("invoiceJatuhTempo"));
+        document.getElementById("suratPeriodePerihal").innerText = `${kapitalAwalKalimat(namaBulanIndo[bulanDipilih].toLowerCase())} ${tahunDipilih}`;
+        document.getElementById("suratNamaKorporat").innerText = namaKorporat;
+        document.getElementById("suratNamaKorporatPks").innerText = namaKorporat;
+        document.getElementById("suratNoPksPos").innerText = ambilFieldNoSurat(noSurat, ["No_pks_pos", "no_pks_pos"]);
+        document.getElementById("suratNoPksKorporat").innerText = ambilFieldNoSurat(noSurat, ["No_pks_korporat", "no_pks_korporat"]);
+        document.getElementById("suratSaldoAkhir").innerText = formatRupiah(saldoAkhir);
+        document.getElementById("suratTerbilang").innerText = terbilangRupiah(saldoAkhir);
+    }
+
+    function updateInvoicePage() {
+        const bulanDipilih = parseInt(document.getElementById("selectBulan").value);
+        const tahunDipilih = parseInt(document.getElementById("inputTahun").value);
+        const targetIdPelanggan = document.getElementById("selectIdPelanggan").value.trim().toUpperCase();
+        const nomorSurat = getNomorSurat();
+        const noSurat = cariNoSurat(targetIdPelanggan);
+        const npwp = ((noSurat.npwp || "").toString().trim()) || "-";
+        const namaPelanggan = globalNamaKorporat || "-";
+        const invoiceNumber = `INV/${tahunDipilih}/${String(bulanDipilih + 1).padStart(2, '0')}/${targetIdPelanggan || 'CUSTOMER'}`;
+        const invoiceDateInput = document.getElementById("invoiceTanggal");
+        const invoiceDateText = (invoiceDateInput && invoiceDateInput.value && invoiceDateInput.value.trim()) ? invoiceDateInput.value.trim() : `${new Date().getDate()} ${namaBulanIndo[new Date().getMonth()]} ${new Date().getFullYear()}`;
+        if (invoiceDateInput) {
+            invoiceDateInput.value = invoiceDateText;
+        }
+        document.getElementById("invoiceReferenceDate").innerText = `Ende, ${invoiceDateText}`;
+
+        const dueDateInput = document.getElementById("invoiceJatuhTempo");
+        updateJatuhTempoDariInvoice(invoiceDateInput, dueDateInput);
+
+        const discountInput = document.getElementById("invoiceDiscount");
+        const discount = discountInput ? (parseInt(discountInput.value.replace(/\D/g, ''), 10) || 0) : 0;
+
+        const ongkir = invoiceSummary.ongkir || 0;
+        const pajak = invoiceSummary.pajak || 0;
+        const htnb = invoiceSummary.htnb || 0;
+        const ppnHtnb = invoiceSummary.ppnHtnb || 0;
+        const totalBruto = ongkir + pajak;
+        const diskon = discount;
+        const ppnSetelahDiskon = Math.max(0, pajak - diskon);
+        const totalNetting = Math.max(0, totalBruto - diskon + ppnSetelahDiskon + htnb + ppnHtnb);
+        const pph23Dikecualikan = pelangganPph23Dikecualikan.has(targetIdPelanggan);
+        const nilaiPph23 = pph23Dikecualikan ? 0 : Math.round(ongkir * 0.02);
+        const biayaPacking = waSummary.biayaPackingNum || 0;
+        const nomorCetakan = parseInt(document.getElementById("invoiceCopyNumber").value, 10) || 1;
+        const dasarDenda = Math.max(0, totalBruto);
+        const dasarTagihanTransfer = Math.max(0, totalNetting - nilaiPph23 + biayaPacking);
+        const dendaCetakanKetiga = Math.round(dasarDenda * 0.02);
+        const totalTransferCetakanKetiga = dasarTagihanTransfer + dendaCetakanKetiga;
+        const dendaCetakanKeempat = Math.round(totalTransferCetakanKetiga * 0.02);
+        const labelDenda = nomorCetakan === 2
+            ? " (1%)"
+            : nomorCetakan === 3
+                ? " (2%)"
+                : nomorCetakan >= 4
+                    ? " (akumulasi denda cetakan ke-3 dan ke-4)"
+                    : "";
+        const dendaKeterlambatan = nomorCetakan === 2
+            ? Math.round(dasarDenda * 0.01)
+            : nomorCetakan === 3
+                ? dendaCetakanKetiga
+                : nomorCetakan >= 4
+                    ? dendaCetakanKetiga + dendaCetakanKeempat
+                    : 0;
+        const total = Math.max(0, dasarTagihanTransfer + dendaKeterlambatan);
+        const unit = invoiceSummary.jumlahUnit || 0;
+        const tarif = invoiceSummary.tarifPerUnit || 0;
+
+        document.getElementById("invoiceNomor").innerText = invoiceNumber;
+        const invoiceDateValue = (invoiceDateInput && invoiceDateInput.value && invoiceDateInput.value.trim()) ? invoiceDateInput.value.trim() : `${new Date().getDate()} ${namaBulanIndo[new Date().getMonth()]} ${new Date().getFullYear()}`;
+        if (invoiceDateInput) {
+            invoiceDateInput.value = invoiceDateValue;
+        }
+        document.getElementById("invoiceNomorPengantar").innerText = nomorSurat;
+        const rekeningList = [
+            "BRI : 0024-01-001238-30-3 an. POS INDONESIA",
+            "BRIVA : 1394908130000 an. P088630000 ENDE",
+            "BNI : 54731889 an. DIVRE 8 KP ENDE",
+            "VA BNI : 9885614886300813 an. 86300 ENDE",
+            "MANDIRI : 161-0000-86300-6 an. POS INDONESIA"
+        ];
+        const rekeningEl = document.getElementById("invoiceRekening");
+        if (rekeningEl) {
+            rekeningEl.innerHTML = rekeningList.map((item) => `<div>${item}</div>`).join('');
+        }
+        document.getElementById("invoiceNamaPelanggan").innerText = namaPelanggan;
+        document.getElementById("invoiceKodePelanggan").innerText = targetIdPelanggan || "-";
+        document.getElementById("invoiceIdPelanggan").innerText = ambilFieldNoSurat(noSurat, ["No_pks_korporat", "no_pks_korporat"]) || targetIdPelanggan || "-";
+        document.getElementById("invoiceNpwp").innerText = npwp;
+        const selectedPeriodText = `${namaBulanIndo[bulanDipilih]} ${tahunDipilih}`;
+        document.getElementById("invoicePeriode").innerText = selectedPeriodText;
+
+        document.getElementById("invoicePeriod").innerText = selectedPeriodText;
+        document.getElementById("invoicePeriodTable").innerText = selectedPeriodText;
+        document.getElementById("invoiceUnit").innerText = unit.toLocaleString('en-US');
+        const formatInvoiceAmount = value => Number(value) === 0 ? "-" : formatRupiah(value);
+        document.getElementById("invoiceJumlah").innerText = `Rp ${formatInvoiceAmount(total)}`;
+        document.getElementById("invoiceTerbilang").innerText = terbilangRupiah(total);
+        document.getElementById("invoiceSubtotal").innerText = formatInvoiceAmount(ongkir);
+        document.getElementById("invoiceBruto").innerText = formatInvoiceAmount(totalBruto);
+        document.getElementById("invoiceDiskon").innerText = formatInvoiceAmount(diskon);
+        document.getElementById("invoicePpnSetelahDiskon").innerText = formatInvoiceAmount(ppnSetelahDiskon);
+        document.getElementById("invoiceDenda").innerText = formatInvoiceAmount(htnb);
+        document.getElementById("invoicePajak").innerText = formatInvoiceAmount(pajak);
+        document.getElementById("invoicePpnHtnb").innerText = formatInvoiceAmount(ppnHtnb);
+        document.getElementById("invoiceNetting").innerText = formatInvoiceAmount(totalNetting);
+        document.getElementById("invoicePph23").innerText = formatInvoiceAmount(nilaiPph23);
+        document.getElementById("invoicePacking").innerText = formatInvoiceAmount(biayaPacking);
+        document.getElementById("invoiceLatePenaltyLabel").innerText = labelDenda;
+        document.getElementById("invoiceLatePenalty").innerText = formatInvoiceAmount(dendaKeterlambatan);
+        document.getElementById("invoiceTotal").innerText = formatInvoiceAmount(total);
+        invoiceSummary.total = total;
+        document.getElementById("suratSaldoAkhir").innerText = formatRupiah(total);
+        document.getElementById("suratTerbilang").innerText = terbilangRupiah(total);
+    }
+
+    
+async function ambilDataDariSheets() {
+    try {
+
+        const response = await fetch(
+            SCRIPT_URL + '?token=' + encodeURIComponent(apiToken) + '&_=' + new Date().getTime()
+        );
+
+        const result = await response.json();
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || `Gagal memuat database (HTTP ${response.status}).`);
+        }
+        ['customerIds', 'laporanUtama', 'detailTransaksi', 'saldoLalu', 'pelunasan', 'packing', 'noSurat'].forEach(key => {
+            if (!Array.isArray(result[key])) {
+                throw new Error(`Respons Apps Script tidak memiliki data ${key} dalam format yang benar.`);
+            }
+        });
+
+        console.log('DATABASE:', result);
+
+        customerIds = result.customerIds
+            .map(id => (id || '').toString().trim().toUpperCase())
+            .filter(id => id !== '');
+        cloudData = {
+            laporanUtama : result.laporanUtama,
+            detailTransaksi : result.detailTransaksi,
+            saldoLalu : result.saldoLalu,
+            pelunasan : result.pelunasan,
+            packing : result.packing,
+            noSurat : result.noSurat
+        };
+
+        populasiDropdownPelanggan();
+
+        renderTabel();
+
+        const toastElement = document.getElementById('dbToast');
+
+        if(toastElement){
+            const toast = new bootstrap.Toast(
+                toastElement,
+                { delay: 3000 }
+            );
+            toast.show();
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            'Gagal memuat database.\n\n' +
+            (error.message || 'Pastikan deployment Apps Script terbaru masih aktif.')
+        );
+
+    }
+}
+
+    // MEMBUAT ID PELANGGAN UNIK BERDASARKAN SHEET DATA_TRANSAKSI
+    function populasiDropdownPelanggan() {
+        const selectElement = document.getElementById("selectIdPelanggan");
+        const idUnik = [...new Set(customerIds)];
+        idUnik.sort();
+
+        selectElement.innerHTML = "";
+        
+        if(idUnik.length === 0) {
+            selectElement.innerHTML = `<option value="">Tidak ada ID ditemukan</option>`;
+            return;
+        }
+
+        idUnik.forEach(id => {
+            let selectedAttr = (id === "BANKBNI08863A") ? "selected" : "";
+            selectElement.insertAdjacentHTML('beforeend', `<option value="${id}" ${selectedAttr}>${id}</option>`);
+        });
+    }
+
+    // debug helper removed
+
+    function renderTabel() {
+        const bulanDipilih = parseInt(document.getElementById("selectBulan").value);
+        const tahunDipilih = parseInt(document.getElementById("inputTahun").value);
+        const targetIdPelanggan = document.getElementById("selectIdPelanggan").value.trim().toUpperCase();
+        
+        document.getElementById("headerBulan").innerText = `${namaBulanIndo[bulanDipilih]} ${tahunDipilih}`;
+        document.getElementById("headerKode").innerText = targetIdPelanggan ? targetIdPelanggan : "-";
+        
+        const jumlahHari = new Date(tahunDipilih, bulanDipilih + 1, 0).getDate();
+        const tbody = document.getElementById("tabelBody");
+        tbody.innerHTML = ""; 
+
+        if(!targetIdPelanggan) {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted">Silakan pilih ID Pelanggan terlebih dahulu</td></tr>`;
+            globalNamaKorporat = "-";
+            waSummary.saldoAkhirNum = 0;
+            updateSuratTagihan();
+            return;
+        }
+
+        let totalItemAkumulasi = 0;
+        let totalOngkirAkumulasi = 0;
+        let totalPpnAkumulasi = 0;
+        let totalHtnbAkumulasi = 0;
+        let totalBiayaAkumulasi = 0;
+        let namaKorporatTerdeteksi = "";
+        const databaseUtama = cloudData.laporanUtama || [];
+        let keywordBulan = namaBulanEng[bulanDipilih]; 
+
+        for (let i = 1; i <= jumlahHari; i++) {
+            let tglDuaDigit = i < 10 ? '0' + i : i.toString();
+            let targetTeksTanggal = `${tglDuaDigit} ${keywordBulan} ${tahunDipilih}`; 
+
+            let kumpulanBarisCocok = databaseUtama.filter(row => {
+                if(!row.tglTrx || !row.idPelanggan) return false;
+                if(row.idPelanggan.trim().toUpperCase() !== targetIdPelanggan) return false;
+                
+const dbDate = parseTanggal(row.tglTrx);
+
+if(!dbDate) return false;
+
+return (
+    dbDate.getDate() === i &&
+    dbDate.getMonth() === bulanDipilih &&
+    dbDate.getFullYear() === tahunDipilih
+);
+
+            });
+
+            let jumlahTrx = 0;
+            let subTotalOngkir = 0;
+            let subTotalPpn = 0;
+            let subTotalHtnb = 0;
+
+            kumpulanBarisCocok.forEach(baris => {
+                jumlahTrx += Number(baris.trx) || 1;
+                subTotalOngkir += parseInt(angkaBersih(baris.ongkir)) || 0;
+                subTotalPpn += parseInt(angkaBersih(baris.ppn)) || 0;
+                subTotalHtnb += parseInt(angkaBersih(baris.htnb)) || 0;
+                if(baris.namaKorporat && !namaKorporatTerdeteksi) {
+                    namaKorporatTerdeteksi = baris.namaKorporat.replace(/_/g, " ");
+                }
+            });
+
+            const subTotalBea = subTotalOngkir + subTotalPpn + subTotalHtnb;
+            totalItemAkumulasi += jumlahTrx;
+            totalOngkirAkumulasi += subTotalOngkir;
+            totalPpnAkumulasi += subTotalPpn;
+            totalHtnbAkumulasi += subTotalHtnb;
+            totalBiayaAkumulasi += subTotalBea;
+
+            const hasTransactions = jumlahTrx > 0;
+            const amountCell = value => {
+                const isZero = !hasTransactions || value === 0;
+                return `<td class="${isZero ? 'text-center' : 'text-end'}">${isZero ? '-' : value.toLocaleString('en-US')}</td>`;
+            };
+            const rowHtml = `<tr>
+                <td class="text-center">${i}</td>
+                <td>${tglDuaDigit} ${keywordBulan} ${tahunDipilih}</td>
+                <td class="text-center">${hasTransactions ? jumlahTrx : "-"}</td>
+                ${amountCell(subTotalOngkir)}
+                ${amountCell(subTotalPpn)}
+                ${amountCell(subTotalHtnb)}
+                ${amountCell(subTotalBea)}
+            </tr>`;
+            tbody.insertAdjacentHTML('beforeend', rowHtml);
+        }
+
+        if (namaKorporatTerdeteksi) {
+            globalNamaKorporat = namaKorporatTerdeteksi.toUpperCase();
+            document.getElementById("headerNamaKorporat").innerText = globalNamaKorporat;
+        } else {
+            let alternatif = databaseUtama.find(row => (row.idPelanggan || "").trim().toUpperCase() === targetIdPelanggan);
+            globalNamaKorporat = alternatif && alternatif.namaKorporat ? alternatif.namaKorporat.replace(/_/g, " ").toUpperCase() : "BANK BNI CAB ENDE";
+            document.getElementById("headerNamaKorporat").innerText = globalNamaKorporat;
+        }
+
+        let txtTotalItem = totalItemAkumulasi > 0 ? totalItemAkumulasi : "-";
+        const totalAmountCell = value => `<td class="${value === 0 ? 'text-center' : 'text-end'}">${value === 0 ? '-' : value.toLocaleString('en-US')}</td>`;
+
+        let totalRow = `<tr style="font-weight: bold;">
+            <td colspan="2">JUMLAH</td>
+            <td class="text-center">${txtTotalItem}</td>
+            ${totalAmountCell(totalOngkirAkumulasi)}
+            ${totalAmountCell(totalPpnAkumulasi)}
+            ${totalAmountCell(totalHtnbAkumulasi)}
+            ${totalAmountCell(totalBiayaAkumulasi)}
+        </tr>`;
+        tbody.insertAdjacentHTML('beforeend', totalRow);
+
+        const arraySaldoLalu = Array.isArray(cloudData.saldoLalu) ? cloudData.saldoLalu : [];
+        const arrayPelunasan = Array.isArray(cloudData.pelunasan) ? cloudData.pelunasan : [];
+        const arrayPacking   = Array.isArray(cloudData.packing) ? cloudData.packing : [];
+        
+        let matchSaldo = arraySaldoLalu.find(row => (row.idPelanggan || "").trim().toUpperCase() === targetIdPelanggan);
+        let vSaldoLalu = matchSaldo ? parseInt(angkaBersih(matchSaldo.total)) || 0 : 0;
+
+        let vPelunasan = 0;
+        arrayPelunasan.forEach(row => {
+            let id = (row.idPelanggan || "").trim().toUpperCase();
+            const dbDate = parseTanggal(row.tglTrx);
+
+            if(!dbDate) return;
+
+            if(
+                id === targetIdPelanggan &&
+                dbDate.getMonth() === bulanDipilih &&
+                dbDate.getFullYear() === tahunDipilih
+            ) {
+                vPelunasan += parseInt(angkaBersih(row.total)) || 0;
+            }
+        });
+
+        let vPacking = 0;
+        arrayPacking.forEach(row => {
+            let id = (row.idPelanggan || "").trim().toUpperCase();
+            const dbDate = parseTanggal(row.tglTrx);
+
+            if(!dbDate) return;
+
+            if(
+                id === targetIdPelanggan &&
+                dbDate.getMonth() === bulanDipilih &&
+                dbDate.getFullYear() === tahunDipilih
+            ) {
+                vPacking += parseInt(angkaBersih(row.total)) || 0;
+            }
+        });
+        
+        let vSaldoAkhir = vSaldoLalu - vPelunasan + vPacking + totalBiayaAkumulasi;
+
+        document.getElementById("saldoLalu").innerText = vSaldoLalu > 0 ? vSaldoLalu.toLocaleString('en-US') : "-";
+        document.getElementById("pelunasanTagihan").innerText = vPelunasan > 0 ? vPelunasan.toLocaleString('en-US') : "-";
+        document.getElementById("biayaPacking").innerText = vPacking > 0 ? vPacking.toLocaleString('en-US') : "-";
+        document.getElementById("saldoPengiriman").innerText = totalBiayaAkumulasi > 0 ? totalBiayaAkumulasi.toLocaleString('en-US') : "-";
+        document.getElementById("saldoAkhir").innerText = vSaldoAkhir !== 0 ? vSaldoAkhir.toLocaleString('en-US') : "-";
+
+        invoiceSummary = {
+            jumlahUnit: Number(txtTotalItem) || 0,
+            tarifPerUnit: totalOngkirAkumulasi > 0 && Number(txtTotalItem) > 0 ? Math.round(totalOngkirAkumulasi / Number(txtTotalItem)) : 0,
+            ongkir: totalOngkirAkumulasi,
+            diskon: 0,
+            htnb: totalHtnbAkumulasi,
+            pajak: totalPpnAkumulasi,
+            ppnHtnb: 0,
+            total: totalOngkirAkumulasi + totalPpnAkumulasi
+        };
+
+        waSummary.totalItem = txtTotalItem;
+        waSummary.totalBiayaNum = totalBiayaAkumulasi;
+        waSummary.biayaPackingNum = vPacking;
+        waSummary.saldoAkhirNum = vSaldoAkhir;
+        updateSuratTagihan();
+        updateInvoicePage();
+        try { populateAdditionalTable(); } catch(e) { console.warn('populateAdditionalTable failed', e); }
+    }
+
+    function cetakKePdf(printTarget = 'both') {
+        if (![USER_ROLES.SUPERUSER, USER_ROLES.ADMIN].includes(currentRole)) {
+            showToast('Fitur print hanya tersedia untuk superuser dan admin.', 'warning');
+            return;
+        }
+        const bulanDipilih = parseInt(document.getElementById("selectBulan").value);
+        const tahunDipilih = parseInt(document.getElementById("inputTahun").value);
+        const targetIdPelanggan = document.getElementById("selectIdPelanggan").value.trim().toUpperCase();
+        let mmStr = (bulanDipilih + 1) < 10 ? '0' + (bulanDipilih + 1) : (bulanDipilih + 1);
+        const judulAsli = document.title;
+        const suffix = printTarget === "page1" ? "Invoice"
+            : printTarget === "page2" ? "Rekap"
+                : printTarget === "page3" ? "Rincian"
+                    : printTarget === "page4" ? "Perhitungan_PPH23"
+                        : "Invoice_Rekap_Rincian_dan_PPH23";
+        const namaPelanggan = globalNamaKorporat.trim() || targetIdPelanggan || "Pelanggan";
+        const namaFile = `${mmStr}_${tahunDipilih}_${targetIdPelanggan || "Tanpa_ID"}_${namaPelanggan}_${suffix}`
+            .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "-")
+            .replace(/\s+/g, "_")
+            .replace(/[. ]+$/g, "");
+        const titleElement = document.querySelector("head title");
+        document.title = namaFile;
+        if (titleElement) titleElement.textContent = namaFile;
+        const page1 = document.querySelector(".page-section.page-1");
+        const page2 = document.querySelector(".page-section.page-2");
+        const originalPageOrderParent = page1 && page2 && page1.parentNode === page2.parentNode
+            ? page1.parentNode
+            : null;
+        document.body.classList.remove("print-page-1", "print-page-2", "print-page-3", "print-page-4");
+        document.body.classList.remove("print-both");
+        if (printTarget === "page1") document.body.classList.add("print-page-1");
+        if (printTarget === "page2") document.body.classList.add("print-page-2");
+        if (printTarget === "page3") document.body.classList.add("print-page-3");
+        if (printTarget === "page4") document.body.classList.add("print-page-4");
+        if (printTarget === "both") {
+            document.body.classList.add("print-both");
+            if (originalPageOrderParent) originalPageOrderParent.insertBefore(page1, page2);
+        }
+        const cleanupPrintState = () => {
+            document.title = judulAsli;
+            if (printTarget === "both" && originalPageOrderParent) {
+                originalPageOrderParent.insertBefore(page2, page1);
+            }
+            document.body.classList.remove("print-page-1", "print-page-2", "print-page-3", "print-page-4");
+            document.body.classList.remove("print-both");
+        };
+        window.addEventListener("afterprint", cleanupPrintState, { once: true });
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                try {
+                    window.print();
+                } catch (error) {
+                    window.removeEventListener("afterprint", cleanupPrintState);
+                    cleanupPrintState();
+                    throw error;
+                }
+            });
+        });
+    }
+
+    function refreshData() {
+        ambilDataDariSheets();
+        showToast('Data berhasil diperbarui tanpa logout.', 'success');
+    }
+
+    function bukaSpreadsheet() {
+        if (currentRole !== USER_ROLES.SUPERUSER) {
+            alert('Hanya superuser yang dapat membuka database.');
+            return;
+        }
+        window.open(SPREADSHEET_URL, '_blank');
+    }
+
+    async function buatFilePdfLaporan(targetIdPelanggan) {
+        if (typeof window.html2pdf !== "function") {
+            throw new Error("Pustaka pembuat PDF tidak tersedia.");
+        }
+
+        const bulanDipilih = parseInt(document.getElementById("selectBulan").value, 10) + 1;
+        const tahunDipilih = document.getElementById("inputTahun").value;
+        const namaFile = `Laporan_${targetIdPelanggan}_${String(bulanDipilih).padStart(2, "0")}_${tahunDipilih}.pdf`
+            .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "-");
+        const pageDefinitions = [
+            { selector: ".page-section.page-1", widthMm: 210, heightMm: 297, orientation: "portrait" },
+            { selector: ".page-section.page-2", widthMm: 210, heightMm: 297, orientation: "portrait" },
+            { selector: ".page-section.page-3", widthMm: 297, heightMm: 210, orientation: "landscape" }
+        ];
+        const stagingContainer = document.createElement("div");
+        stagingContainer.style.position = "fixed";
+        stagingContainer.style.left = "-10000px";
+        stagingContainer.style.top = "0";
+        const stagingStyles = document.createElement("style");
+        stagingStyles.textContent = `
+            .pdf-export-page { display: block !important; box-sizing: border-box; margin: 0 !important; overflow: visible !important; background: #fff; }
+            .pdf-export-page-1 { width: 210mm; padding: 0; }
+            .pdf-export-page-1 .invoice-reference-page { width: 210mm !important; min-height: 0 !important; height: auto !important; margin: 0 !important; }
+            .pdf-export-page-2 { width: 210mm; padding: 8mm; }
+            .pdf-export-page-2 .report-container { width: 100% !important; max-width: none !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; }
+            .pdf-export-page-2 .header-title { padding: 6px 4px; font-size: 10pt; margin-bottom: 8px; background: #ffee55 !important; color: #000 !important; }
+            .pdf-export-page-2 .table-report { width: 100% !important; margin-bottom: 8px; }
+            .pdf-export-page-2 .table-report th, .pdf-export-page-2 .table-report td { padding: 2px 4px; font-size: 8pt; }
+            .pdf-export-page-2 .info-saldo-section { display: block !important; margin-top: 6px; }
+            .pdf-export-page-2 .info-saldo-section td { font-size: 8pt; padding: 2px 0; }
+            .pdf-export-page-2 .ttd-section { margin-top: 10px; padding-top: 8px; }
+            .pdf-export-page-2 .ttd-space { height: 45px; }
+            .pdf-export-page-3 { width: 297mm; padding: 8mm; }
+            .pdf-export-page-3 .report-container { width: 100% !important; max-width: none !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; }
+            .pdf-export-page-3 .table-responsive { overflow: visible !important; }
+            .pdf-export-page-3 .additional-table { width: 100% !important; min-width: 0 !important; table-layout: fixed; font-size: 7.5pt; }
+            .pdf-export-page-3 .additional-table th, .pdf-export-page-3 .additional-table td { padding: 3px 4px; font-size: 7.5pt; line-height: 1.25; white-space: normal; overflow-wrap: anywhere; }
+            .pdf-export-page-3 .additional-table th:nth-child(1), .pdf-export-page-3 .additional-table td:nth-child(1) { width: 4%; text-align: center; }
+            .pdf-export-page-3 .additional-table th:nth-child(2), .pdf-export-page-3 .additional-table td:nth-child(2) { width: 10%; }
+            .pdf-export-page-3 .additional-table th:nth-child(3), .pdf-export-page-3 .additional-table td:nth-child(3) { width: 15%; }
+            .pdf-export-page-3 .additional-table th:nth-child(4), .pdf-export-page-3 .additional-table td:nth-child(4) { width: 12%; }
+            .pdf-export-page-3 .additional-table th:nth-child(5), .pdf-export-page-3 .additional-table td:nth-child(5) { width: 14%; }
+            .pdf-export-page-3 .additional-table th:nth-child(6), .pdf-export-page-3 .additional-table td:nth-child(6) { width: 6%; text-align: center; }
+            .pdf-export-page-3 .additional-table th:nth-child(7), .pdf-export-page-3 .additional-table td:nth-child(7) { width: 5%; text-align: center; }
+            .pdf-export-page-3 .additional-table th:nth-child(8), .pdf-export-page-3 .additional-table td:nth-child(8) { width: 8%; }
+            .pdf-export-page-3 .additional-table th:nth-child(9), .pdf-export-page-3 .additional-table td:nth-child(9) { width: 5%; }
+            .pdf-export-page-3 .additional-table th:nth-child(10), .pdf-export-page-3 .additional-table td:nth-child(10) { width: 6%; }
+            .pdf-export-page-3 .additional-table th:nth-child(11), .pdf-export-page-3 .additional-table td:nth-child(11) { width: 8%; }
+            .pdf-export-page-3 .additional-table th:nth-child(12), .pdf-export-page-3 .additional-table td:nth-child(12) { width: 7%; }
+        `;
+        stagingContainer.appendChild(stagingStyles);
+
+        const clones = pageDefinitions.map((definition, index) => {
+            const source = document.querySelector(definition.selector);
+            if (!source) {
+                throw new Error(`Bagian laporan ${index + 1} tidak ditemukan.`);
+            }
+
+            const clone = source.cloneNode(true);
+            clone.classList.add("pdf-export-page", `pdf-export-page-${index + 1}`);
+            clone.style.display = "block";
+            stagingContainer.appendChild(clone);
+            return clone;
+        });
+
+        document.body.appendChild(stagingContainer);
+        try {
+            const invoiceClone = clones[0].querySelector(".invoice-reference-page");
+            for (const image of invoiceClone.querySelectorAll("img")) {
+                try {
+                    if (image.classList.contains("invoice-reference-logo")) {
+                        if (typeof window.INVOICE_PDF_LOGO_DATA !== "string" ||
+                            !window.INVOICE_PDF_LOGO_DATA.startsWith("data:image/png;base64,")) {
+                            throw new Error("Data logo invoice tidak tersedia.");
+                        }
+                        image.src = window.INVOICE_PDF_LOGO_DATA;
+                        await image.decode();
+                        if (!image.naturalWidth) {
+                            throw new Error("Logo invoice tidak dapat dimuat.");
+                        }
+                        continue;
+                    }
+
+                    if (!image.complete) {
+                        await new Promise((resolve, reject) => {
+                            image.addEventListener("load", resolve, { once: true });
+                            image.addEventListener("error", reject, { once: true });
+                        });
+                    }
+                    if (!image.naturalWidth) {
+                        throw new Error(`Gambar invoice tidak dapat dimuat: ${image.alt || image.src}`);
+                    }
+
+                    const canvas = document.createElement("canvas");
+                    canvas.width = image.naturalWidth;
+                    canvas.height = image.naturalHeight;
+                    canvas.getContext("2d").drawImage(image, 0, 0);
+                    image.src = canvas.toDataURL("image/png");
+                } catch (error) {
+                    console.error("Gagal menyiapkan gambar invoice untuk PDF.", error);
+                    throw error;
+                }
+            }
+
+            const pdfSettings = {
+                margin: 0,
+                image: { type: "jpeg", quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+                pagebreak: { mode: ["css", "legacy"] }
+            };
+            const pdf = await window.html2pdf()
+                .set({
+                    ...pdfSettings,
+                    html2canvas: { ...pdfSettings.html2canvas, height: 1122 }
+                })
+                .from(clones[0].querySelector(".invoice-reference-page"))
+                .toPdf()
+                .get("pdf");
+
+            const invoicePageWidth = pdf.internal.pageSize.getWidth();
+            const invoicePageHeight = pdf.internal.pageSize.getHeight();
+            pdf.setDrawColor(17, 17, 17);
+            pdf.setLineWidth(0.25);
+            pdf.rect(2, 2, invoicePageWidth - 4, invoicePageHeight - 4);
+
+            const addCanvasPage = (canvas, orientation) => {
+                pdf.addPage("a4", orientation);
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const scale = Math.min(pageWidth / canvas.width, pageHeight / canvas.height);
+                const imageWidth = canvas.width * scale;
+                const imageHeight = canvas.height * scale;
+                pdf.addImage(
+                    canvas.toDataURL("image/jpeg", 0.98),
+                    "JPEG",
+                    (pageWidth - imageWidth) / 2,
+                    0,
+                    imageWidth,
+                    imageHeight
+                );
+            };
+
+            const rekapCanvas = await window.html2pdf()
+                .set({
+                    ...pdfSettings,
+                    jsPDF: { ...pdfSettings.jsPDF, orientation: pageDefinitions[1].orientation }
+                })
+                .from(clones[1])
+                .toCanvas()
+                .get("canvas");
+            addCanvasPage(rekapCanvas, pageDefinitions[1].orientation);
+
+            const detailPage = clones[2];
+            const detailTable = detailPage.querySelector(".additional-table");
+            const detailBody = detailTable && detailTable.tBodies[0];
+            if (!detailTable || !detailBody) {
+                throw new Error("Tabel rincian transaksi tidak ditemukan.");
+            }
+
+            const detailRows = Array.from(detailBody.rows, row => row.cloneNode(true));
+            const detailRowHeights = Array.from(detailBody.rows, row => row.getBoundingClientRect().height);
+            detailBody.replaceChildren();
+            const maxDetailContentHeight = (pageDefinitions[2].heightMm - 16) * 96 / 25.4;
+            const detailBaseHeight = detailPage.querySelector(".report-container").getBoundingClientRect().height;
+            const availableDetailHeight = Math.max(1, maxDetailContentHeight - detailBaseHeight);
+            const detailChunks = [];
+            let detailChunk = [];
+            let detailChunkHeight = 0;
+
+            detailRows.forEach((row, index) => {
+                const rowHeight = detailRowHeights[index];
+                if (detailChunk.length && detailChunkHeight + rowHeight > availableDetailHeight) {
+                    detailChunks.push(detailChunk);
+                    detailChunk = [];
+                    detailChunkHeight = 0;
+                }
+                detailChunk.push(row);
+                detailChunkHeight += rowHeight;
+            });
+            if (detailChunk.length || detailChunks.length === 0) {
+                detailChunks.push(detailChunk);
+            }
+
+            for (const chunk of detailChunks) {
+                detailBody.replaceChildren();
+                for (const row of chunk) {
+                    detailBody.appendChild(row);
+                }
+                const detailCanvas = await window.html2pdf()
+                    .set({
+                        ...pdfSettings,
+                        jsPDF: { ...pdfSettings.jsPDF, orientation: pageDefinitions[2].orientation }
+                    })
+                    .from(detailPage)
+                    .toCanvas()
+                    .get("canvas");
+                addCanvasPage(detailCanvas, pageDefinitions[2].orientation);
+            }
+
+            const pdfBlob = pdf.output("blob");
+            return new File([pdfBlob], namaFile, { type: "application/pdf" });
+        } finally {
+            stagingContainer.remove();
+        }
+    }
+
+    function kirimKeWhatsApp() {
+        kirimInvoiceKeWhatsApp().catch(error => {
+            console.error("Gagal menyiapkan laporan untuk WhatsApp.", error);
+            showToast("Gagal menyiapkan PDF laporan. Silakan coba lagi.", "danger");
+        });
+    }
+
+    async function kirimInvoiceKeWhatsApp() {
+        const bulanDipilih = parseInt(document.getElementById("selectBulan").value);
+        const tahunDipilih = document.getElementById("inputTahun").value;
+        const targetIdPelanggan = document.getElementById("selectIdPelanggan").value.trim().toUpperCase();
+        
+        if (!targetIdPelanggan) { alert("Silakan pilih ID Pelanggan."); return; }
+
+        updateInvoicePage();
+        const totalTagihanBulanIni = parseInt((document.getElementById("invoiceTotal")?.innerText || "0").replace(/\D/g, ""), 10) || 0;
+        const dendaKeterlambatan = parseInt((document.getElementById("invoiceLatePenalty")?.innerText || "0").replace(/\D/g, ""), 10) || 0;
+        let displayBiayaKirim = waSummary.totalBiayaNum > 0 ? waSummary.totalBiayaNum.toLocaleString('en-US') : "0";
+        let displayBiayaPacking = waSummary.biayaPackingNum > 0 ? waSummary.biayaPackingNum.toLocaleString('en-US') : "0";
+        let displayTotalTagihan = totalTagihanBulanIni > 0 ? totalTagihanBulanIni.toLocaleString('en-US') : "0";
+        const barisDenda = dendaKeterlambatan > 0
+            ? `Denda Keterlambatan Pelunasan : Rp ${dendaKeterlambatan.toLocaleString('en-US')}\n`
+            : "";
+
+        // find PIC numbers from No_surat sheet (cloudData.noSurat)
+        const noSurat = cariNoSurat(targetIdPelanggan) || {};
+        const pic1Raw = ambilFieldNoSurat(noSurat, ["pic_1","pic1","pic 1","pic-1","pic1_no","pic_1_no"]);
+        const pic2Raw = ambilFieldNoSurat(noSurat, ["pic_2","pic2","pic 2","pic-2","pic2_no","pic_2_no"]);
+
+        function normalizePhone(phone){
+            if(!phone) return null;
+            const raw = phone.toString().trim();
+            if(!raw) return null;
+
+            // try to find a +... or digit sequence that looks like a phone number
+            const plusMatch = raw.match(/\+?\d[\d\s\-()]{6,}\d/);
+            const digitsMatch = raw.match(/\d{8,}/);
+            let candidate = plusMatch ? plusMatch[0] : (digitsMatch ? digitsMatch[0] : null);
+            if(!candidate) return null;
+
+            // remove non-digit characters, keep leading + if present
+            candidate = candidate.replace(/[()\s\-]/g, '');
+            if(candidate.startsWith('+')) candidate = candidate.substring(1);
+            // convert leading 0 to country code 62
+            if(candidate.startsWith('0')) candidate = '62' + candidate.substring(1);
+            // ensure only digits remain
+            candidate = candidate.replace(/[^\d]/g, '');
+            if(!candidate) return null;
+            return candidate;
+        }
+
+        const pic1 = normalizePhone(pic1Raw === '-' ? '' : pic1Raw);
+        const pic2 = normalizePhone(pic2Raw === '-' ? '' : pic2Raw);
+
+       const teksPesan = `Halo, kami dari *PT. POS INDONESIA (Persero)* \n` +
+                  `*Kantor Pos Ende 86300*.\n\n` +
+                  `*Nama Pelanggan:* ${globalNamaKorporat}\n` +
+                  `*ID Pelanggan :* ${targetIdPelanggan}\n\n` +
+                  `Berikut rincian tagihan pengiriman Anda:\n` +
+                  `Periode : ${namaBulanIndo[bulanDipilih]} ${tahunDipilih}\n` +
+                  `Total Kiriman : ${waSummary.totalItem} item\n` +
+                  `Biaya Kirim : Rp ${displayBiayaKirim}\n` +
+                  `Biaya Packing : Rp ${displayBiayaPacking}\n` +
+                  barisDenda +
+                  `*Total Tagihan Bulan ini : Rp ${displayTotalTagihan}*\n\n` +
+                  `Mohon untuk segera melakukan pembayaran ke rekening :\n` +
+                  `*BRI* : No Rek: 0024-01-001238-30-3 an. POS INDONESIA\n` +
+                  `*BRIVA* : 1394908130000 an. P088630000 ENDE\n` +
+                  `*BNI* :  54731889 an. DIVRE 8 KP ENDE\n` +
+                  `*MANDIRI* : 161-0000-86300-6 an. POS INDONESIA\n\n` +
+                  `Bukti transfer harap dikirimkan kembali melalui nomor WhatsApp ini atau ke PIC an. *Edison Leonard*, Whatsapp: *081339221840.*\n\n` +
+                  `*Catatan:*\n` +
+                  `a. Denda sebesar 1% (satu perseratus) dari invoice (tagihan) jika dilakukan pembayaran setelah 21 (dua puluh satu) hari sampai dengan 25 (dua puluh lima) hari setelah invoice (tagihan) diterima atau denda sebesar 2% (dua perseratus) dari invoice (tagihan) jika dilakukan pembayaran setelah 26 (dua puluh enam) hari sampai dengan 30 (tiga puluh) hari setelah invoice (tagihan) diterima.\n` +
+                  `b. Apabila tidak melunasi invoice (tagihan) sampai dengan 1 bulan sejak tanggal jatuh tempo tagihan maka mulai keesokan harinya pembayaran atas kiriman dilakukan secara tunai.\n` +
+                  `c. Apabila tidak bersedia secara tunai maka Kami berhak menolak dan menghentikan layanan pengiriman ini.\n\n` +
+                  `Terima kasih.`;
+
+        const nomorTujuan = pic1 || pic2;
+        const waUrl = `https://api.whatsapp.com/send?${nomorTujuan ? `phone=${nomorTujuan}&` : ""}text=${encodeURIComponent(teksPesan)}`;
+        const fileUntukCek = new File([""], "invoice.pdf", { type: "application/pdf" });
+        const dukungShareFile = typeof navigator.share === "function" &&
+            typeof navigator.canShare === "function" &&
+            navigator.canShare({ files: [fileUntukCek] });
+        const jendelaWhatsApp = dukungShareFile ? null : window.open(waUrl, "_blank");
+
+        let filePdf;
+        try {
+            filePdf = await buatFilePdfLaporan(targetIdPelanggan);
+        } catch (error) {
+            console.error("Gagal membuat PDF laporan.", error);
+            if (jendelaWhatsApp) {
+                showToast("PDF gagal dibuat; WhatsApp dibuka tanpa lampiran.", "warning");
+            } else {
+                const detailError = error instanceof Error ? error.message : String(error);
+                alert(`PDF gagal dibuat (${detailError}). WhatsApp akan dibuka tanpa lampiran.`);
+                window.location.assign(waUrl);
+            }
+            return;
+        }
+
+        if (dukungShareFile && navigator.canShare({ files: [filePdf] })) {
+            try {
+                await navigator.share({
+                    files: [filePdf],
+                    title: filePdf.name,
+                    text: teksPesan
+                });
+                return;
+            } catch (error) {
+                if (error.name === "AbortError") return;
+                console.error("Berbagi PDF melalui menu perangkat gagal.", error);
+            }
+        }
+
+        const downloadUrl = URL.createObjectURL(filePdf);
+        const downloadLink = document.createElement("a");
+        downloadLink.href = downloadUrl;
+        downloadLink.download = filePdf.name;
+        downloadLink.click();
+        window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+
+        if (dukungShareFile) {
+            showToast("PDF diunduh. Berbagi file gagal; lampirkan PDF secara manual di WhatsApp.", "warning");
+        } else if (jendelaWhatsApp) {
+            showToast("PDF diunduh. Lampirkan PDF tersebut di WhatsApp.", "info");
+        } else {
+            showToast("PDF diunduh. WhatsApp dibuka di tab ini; lampirkan PDF tersebut.", "info");
+            window.setTimeout(() => window.location.assign(waUrl), 500);
+        }
+    }
+
+    
+function updateProgress(val){
+    const pb = document.getElementById('uploadProgress');
+    pb.style.width = val + '%';
+    pb.innerText = val + '%';
+}
+
+function detectDelimiter(line){
+    let commaCount = 0;
+    let semicolonCount = 0;
+    let inQuotes = false;
+
+    for(let i = 0; i < line.length; i++){
+        const char = line[i];
+        const next = line[i + 1];
+
+        if(char === '"' && inQuotes && next === '"'){
+            i++;
+        }else if(char === '"'){
+            inQuotes = !inQuotes;
+        }else if(!inQuotes && char === ','){
+            commaCount++;
+        }else if(!inQuotes && char === ';'){
+            semicolonCount++;
+        }
+    }
+
+    return semicolonCount > commaCount ? ';' : ',';
+}
+
+function parseCSVDocument(text, delimiter){
+    const rows = [];
+    let row = [];
+    let current = '';
+    let inQuotes = false;
+
+    for(let i = 0; i < text.length; i++){
+        const char = text[i];
+        const next = text[i + 1];
+
+        if(char === '"' && inQuotes && next === '"'){
+            current += '"';
+            i++;
+        }else if(char === '"'){
+            inQuotes = !inQuotes;
+        }else if(char === delimiter && !inQuotes){
+            row.push(current);
+            current = '';
+        }else if((char === '\n' || char === '\r') && !inQuotes){
+            if(char === '\r' && next === '\n') i++;
+            row.push(current);
+            if(row.some(value => value.trim() !== '')) rows.push(row);
+            row = [];
+            current = '';
+        }else{
+            current += char;
+        }
+    }
+
+    if(inQuotes){
+        throw new Error('CSV memiliki tanda kutip yang tidak berpasangan.');
+    }
+    row.push(current);
+    if(row.some(value => value.trim() !== '')) rows.push(row);
+    return rows;
+}
+
+function normalizeCSVHeader(value){
+    return String(value || '').replace(/^\uFEFF/, '').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+async function uploadCSVFiles(files){
+    if (![USER_ROLES.SUPERUSER, USER_ROLES.ADMIN].includes(currentRole)) {
+        showToast('Upload file hanya tersedia untuk superuser dan admin.', 'warning');
+        return;
+    }
+    if(!files || files.length === 0) return;
+
+    const records = [];
+    updateProgress(0);
+
+    try {
+        for(let i=0;i<files.length;i++){
+            const file = files[i];
+            const text = (await file.text()).replace(/^\uFEFF/, '');
+            if(!text.trim()){
+                throw new Error(`${file.name}: CSV kosong.`);
+            }
+
+            const delimiter = detectDelimiter(text.split(/\r?\n/, 1)[0]);
+            const rows = parseCSVDocument(text, delimiter);
+            const headers = rows[0].map(normalizeCSVHeader);
+            const requiredGroups = [
+                ['no resi', 'no. resi', 'resi'],
+                ['id pelanggan', 'idpelanggan'],
+                ['tgl kirim', 'tanggal kirim', 'tgl transaksi', 'tanggal transaksi']
+            ];
+            const missingHeader = requiredGroups.find(group => !headers.some(header => group.includes(header)));
+            if(missingHeader){
+                const label = missingHeader[0] === 'no resi' ? 'No Resi'
+                    : missingHeader[0] === 'id pelanggan' ? 'ID Pelanggan' : 'Tgl Kirim';
+                throw new Error(`${file.name}: kolom wajib "${label}" tidak ditemukan. Gunakan CSV detail Data_Transaksi.`);
+            }
+
+            for(let rowIndex=1;rowIndex<rows.length;rowIndex++){
+                const values = rows[rowIndex];
+                const record = {};
+                headers.forEach((header, columnIndex) => {
+                    if(header) record[header] = (values[columnIndex] || '').trim();
+                });
+                records.push(record);
+            }
+
+            updateProgress(Math.round(((i+1)/files.length)*100));
+        }
+
+        if(!records.length){
+            throw new Error('Tidak ada baris transaksi untuk diunggah.');
+        }
+        const response = await fetch(SCRIPT_URL,{
+            method:'POST',
+            body:JSON.stringify({
+                action:'uploadCSV',
+                token:apiToken,
+                data:records
+            })
+        });
+
+        const responseText = await response.text();
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (parseError) {
+            throw new Error('Respons server bukan JSON. Periksa deployment Apps Script.');
+        }
+        if(!response.ok || !result.success){
+            throw new Error(result.message || `Upload gagal (HTTP ${response.status}).`);
+        }
+
+        alert(`Upload berhasil\nData baru: ${result.inserted}\nDuplikat: ${result.duplicate}`);
+        if(result.inserted > 0){
+            await ambilDataDariSheets();
+        }
+    } catch(err) {
+        console.error(err);
+        alert(err.message || 'Upload error.');
+    } finally {
+        document.getElementById('csvInput').value = '';
+    }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+
+    const input = document.getElementById('csvInput');
+
+    input.addEventListener('change',e=>{
+        uploadCSVFiles(e.target.files);
+    });
+
+});
+
+
+window.onload = () => {
+    showLoginOverlay();
+    updateNomorSuratPeriode();
+    const usernameInput = document.getElementById('loginUsername');
+    if (usernameInput) usernameInput.focus();
+
+    const taxInput = document.getElementById('invoiceTaxRate');
+    const discountInput = document.getElementById('invoiceDiscount');
+    const dendaRateInput = document.getElementById('invoiceDendaRate');
+    const dueDateInput = document.getElementById('invoiceJatuhTempo');
+    const invoiceDateInput = document.getElementById('invoiceTanggal');
+
+    if (discountInput) {
+        discountInput.addEventListener('input', () => formatDiscountInput(discountInput));
+    }
+
+    [taxInput, discountInput, dendaRateInput, dueDateInput, invoiceDateInput].forEach(input => {
+        if (input) {
+            input.addEventListener('input', updateInvoicePage);
+            input.addEventListener('change', updateInvoicePage);
+        }
+    });
+
+    // default page (preview)
+    setActivePage(1);
+};
+
+function toggleSidebar() {
+    const layout = document.querySelector('.workspace-layout');
+    if (!layout) return;
+    layout.classList.toggle('sidebar-collapsed');
+    const collapsed = layout.classList.contains('sidebar-collapsed');
+    const appContent = document.getElementById('appContent');
+    if (appContent) appContent.classList.toggle('sidebar-collapsed', collapsed);
+    const toggle = layout.querySelector('.sidebar-toggle');
+    if (toggle) {
+        toggle.setAttribute('aria-label', collapsed ? 'Tampilkan sidebar' : 'Sembunyikan sidebar');
+        toggle.setAttribute('title', collapsed ? 'Tampilkan sidebar' : 'Sembunyikan sidebar');
+    }
+}
+
+function setActivePage(pageNumber){
+    const pages = document.querySelectorAll('.page-section');
+    pages.forEach(p => {
+        p.classList.remove('active');
+        p.style.display = 'none';
+    });
+
+    const target = document.querySelector(`.page-section.page-${pageNumber}`);
+    if(target){
+        target.classList.add('active');
+        target.style.display = 'block';
+    }
+
+    const b1 = document.getElementById('btnPage1');
+    if(b1) b1.classList.toggle('active', pageNumber === 1);
+    const b2 = document.getElementById('btnPage2');
+    if(b2) b2.classList.toggle('active', pageNumber === 2);
+    const b3 = document.getElementById('btnPage3');
+    if(b3) b3.classList.toggle('active', pageNumber === 3);
+    const b4 = document.getElementById('btnPage4');
+    if(b4) b4.classList.toggle('active', pageNumber === 4);
+}
+</script>
+</body>
+</html>
