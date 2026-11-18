@@ -297,6 +297,165 @@
             display: block;
         }
 
+        /* LAYOUT SIDEBAR LAPORAN */
+        .workspace-layout {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+            width: 100%;
+            margin: 0 auto 24px;
+            padding: 0 14px 0 0;
+            transition: grid-template-columns 0.25s ease;
+        }
+        .workspace-sidebar {
+            position: sticky;
+            top: 14px;
+            min-width: 0;
+            min-height: calc(100vh - 210px);
+            padding: 0 14px 24px 14px;
+            border-right: 1px solid #d6dce5;
+            background: #fff;
+            box-shadow: 3px 0 10px rgba(15, 23, 42, 0.05);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin: 12px 0 8px;
+            padding: 10px 12px;
+            color: #fff;
+            background: linear-gradient(135deg, #1268d8, #0d6efd);
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .sidebar-toggle,
+        .sidebar-open-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 32px;
+            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 6px;
+            background: transparent;
+            color: inherit;
+            cursor: pointer;
+        }
+        .sidebar-open-toggle {
+            display: none;
+            margin: 12px 0 0;
+            border-color: #0d6efd;
+            background: #0d6efd;
+            color: #fff;
+        }
+        .workspace-layout.sidebar-collapsed {
+            grid-template-columns: 0 minmax(0, 1fr);
+            width: calc(100% - 18px);
+            margin-left: 18px;
+        }
+        .workspace-layout.sidebar-collapsed .workspace-sidebar {
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transform: translateX(-100%);
+            border-right-color: transparent;
+            box-shadow: none;
+        }
+        .workspace-layout.sidebar-collapsed .sidebar-open-toggle {
+            display: inline-flex;
+        }
+        #appContent.sidebar-collapsed .control-panel {
+            margin-left: 18px;
+        }
+        .workspace-sidebar .page-nav-wrapper {
+            max-width: none;
+            margin: 12px 0 0;
+            padding: 0;
+        }
+        .workspace-sidebar .page-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+        }
+        .workspace-sidebar .page-toggle {
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+        }
+        .page-content {
+            min-width: 0;
+            width: 100%;
+        }
+        .page-content .report-container {
+            width: min(100%, 1100px);
+        }
+        .page-content .surat-container {
+            box-sizing: border-box;
+            max-width: calc(100% - 24px);
+        }
+        .app-topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-height: 56px;
+            padding: 0 18px;
+            color: #fff;
+            background: #1672f9;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.16);
+        }
+        .app-topbar .topbar-menu {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: 0;
+            border-radius: 6px;
+            background: transparent;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .app-topbar .topbar-title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .app-topbar .topbar-subtitle {
+            margin-left: auto;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        .workspace-layout {
+            display: block;
+            width: calc(100% - 236px);
+            margin-left: 236px;
+            padding: 0;
+        }
+        .workspace-sidebar {
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 56px;
+            width: 220px;
+            height: calc(100vh - 56px);
+            overflow-y: auto;
+        }
+        .page-content {
+            width: 100%;
+        }
+        .control-panel {
+            max-width: none;
+            margin: 16px 18px 0 250px;
+        }
+
         .pph23-page {
             width: min(100%, 1400px);
             margin: 0 auto 20px;
@@ -761,22 +920,23 @@
         .login-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.5);
+            background:
+                linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.16) 48%, rgba(0, 0, 0, 0.34) 100%),
+                url('./background.jpg') center center / cover no-repeat;
             display: none;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
             z-index: 10000;
-            padding: 15px;
-            backdrop-filter: blur(4px);
+            padding: 32px clamp(24px, 7vw, 112px) 32px 32px;
         }
         .login-card {
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             background: #ffffff;
-            border-radius: 22px;
-            padding: 32px 28px;
-            box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18);
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 2px;
+            padding: 28px 24px 24px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+            border: 0;
         }
         .login-card img.login-brand {
             width: 120px;
@@ -821,6 +981,17 @@
             margin-top: 16px;
             font-size: 12px;
             color: #7a8290;
+        }
+
+        @media (max-width: 800px) {
+            .login-overlay {
+                justify-content: center;
+                padding: 20px;
+                background-position: 38% center;
+            }
+            .login-card {
+                max-width: 420px;
+            }
         }
 
         .landing-overlay {
@@ -1091,6 +1262,49 @@
             .pph23-table th, .pph23-table td { padding: 2px 3px; font-size: 7pt; white-space: normal; overflow-wrap: anywhere; }
             .pph23-table input { min-width: 0; width: 100%; padding: 0; border: 0; }
         }
+        @media (max-width: 800px) {
+            .workspace-layout {
+                display: block;
+                width: 100%;
+                margin-left: 0;
+                padding: 0 8px;
+            }
+            .workspace-sidebar {
+                position: static;
+                width: auto;
+                height: auto;
+                min-height: auto;
+                padding: 0 0 12px;
+                border-right: 0;
+                box-shadow: none;
+                margin-bottom: 12px;
+            }
+            .workspace-layout.sidebar-collapsed .workspace-sidebar {
+                display: none;
+            }
+            .workspace-layout.sidebar-collapsed .page-content {
+                width: 100%;
+            }
+            .workspace-layout.sidebar-collapsed {
+                width: 100%;
+                margin-left: 0;
+            }
+            #appContent.sidebar-collapsed .control-panel {
+                margin-left: 8px;
+                margin-right: 8px;
+            }
+            .workspace-sidebar .page-nav {
+                flex-direction: row;
+                overflow-x: auto;
+                width: 100%;
+            }
+            .workspace-sidebar .page-toggle {
+                width: auto;
+                min-width: max-content;
+                white-space: nowrap;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1143,6 +1357,13 @@
 
 
 <div id="appContent" style="display:none;">
+<header class="app-topbar no-print">
+    <button type="button" class="topbar-menu" onclick="toggleSidebar()" aria-label="Tampilkan atau sembunyikan sidebar" title="Menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    <span class="topbar-title">Laporan Piutang KC Ende 86300</span>
+    <span class="topbar-subtitle">Sistem Pelaporan Piutang</span>
+</header>
 <div class="control-panel no-print">
         
         <div class="d-flex flex-grow-1 flex-wrap gap-2 align-items-end">
@@ -1235,14 +1456,21 @@
 </div>
 </div>
 
-<div class="page-nav-wrapper no-print" aria-label="Navigasi Halaman Laporan">
-    <div class="page-nav" role="group">
-        <button type="button" id="btnPage1" class="page-toggle active" onclick="setActivePage(1)">Invoice</button>
-        <button type="button" id="btnPage2" class="page-toggle" onclick="setActivePage(2)">Rekap transaksi</button>
-        <button type="button" id="btnPage3" class="page-toggle" onclick="setActivePage(3)">Rincian Transaksi</button>
-        <button type="button" id="btnPage4" class="page-toggle" onclick="setActivePage(4)">Perhitungan PPH 23</button>
-    </div>
-</div>
+<div class="workspace-layout">
+    <aside class="workspace-sidebar no-print">
+        <div class="sidebar-brand">
+            <span>LAPORAN PIUTANG</span>
+        </div>
+        <div class="page-nav-wrapper" aria-label="Navigasi Halaman Laporan">
+            <div class="page-nav" role="group">
+                <button type="button" id="btnPage1" class="page-toggle active" onclick="setActivePage(1)">Invoice</button>
+                <button type="button" id="btnPage2" class="page-toggle" onclick="setActivePage(2)">Rekap transaksi</button>
+                <button type="button" id="btnPage3" class="page-toggle" onclick="setActivePage(3)">Rincian Transaksi</button>
+                <button type="button" id="btnPage4" class="page-toggle" onclick="setActivePage(4)">Perhitungan PPH 23</button>
+            </div>
+        </div>
+    </aside>
+    <main class="page-content">
 
 <div class="page-section page-2">
 <div class="report-container">
@@ -1483,6 +1711,8 @@
         </table>
     </div>
 </div>
+</main>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
@@ -1556,6 +1786,16 @@
 
         const parsed = new Date(raw);
         return isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    function formatTanggalSingkat(value) {
+        const date = parseTanggal(value);
+        if (!date) return '';
+        return [
+            String(date.getDate()).padStart(2, '0'),
+            String(date.getMonth() + 1).padStart(2, '0'),
+            date.getFullYear()
+        ].join('-');
     }
 
     function monthToIndex(value) {
@@ -1758,7 +1998,7 @@
                 <td class="${ppn === 0 ? 'text-center' : 'text-num'}">${ppn === 0 ? '-' : formatNumber(ppn)}</td>
                 <td class="${htnb === 0 ? 'text-center' : 'text-num'}">${htnb === 0 ? '-' : formatNumber(htnb)}</td>
                 <td class="text-num">${formatNumber(total)}</td>
-                <td class="text-center">${escapeHtml(row.tglTrx || '')}</td>
+                <td class="text-center">${formatTanggalSingkat(row.tglTrx)}</td>
             `;
             tbody.appendChild(tr);
         });
@@ -1889,8 +2129,8 @@
     }
 
     function escapeHtml(text) {
-        if (!text) return '';
-        return text.replace(/[&<>"]+/g, function (s) {
+        if (text === null || text === undefined) return '';
+        return String(text).replace(/[&<>"]+/g, function (s) {
             return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]);
         });
     }
@@ -1937,7 +2177,7 @@
         document.getElementById('btnWA').style.display = (isSuper || isAdmin) ? 'inline-flex' : 'none';
         document.getElementById('btnExportExcel').style.display = (isSuper || isAdmin) ? 'inline-flex' : 'none';
         document.getElementById('btnLogout').style.display = isLoggedIn ? 'inline-flex' : 'none';
-        document.getElementById('btnUploadCsv').style.display = isLoggedIn ? 'inline-flex' : 'none';
+        document.getElementById('btnUploadCsv').style.display = (isSuper || isAdmin) ? 'inline-flex' : 'none';
 
         const reportContainer = document.querySelector('.report-container');
         const suratContainer = document.querySelector('.surat-container');
@@ -2460,6 +2700,10 @@ return (
     }
 
     function cetakKePdf(printTarget = 'both') {
+        if (![USER_ROLES.SUPERUSER, USER_ROLES.ADMIN].includes(currentRole)) {
+            showToast('Fitur print hanya tersedia untuk superuser dan admin.', 'warning');
+            return;
+        }
         const bulanDipilih = parseInt(document.getElementById("selectBulan").value);
         const tahunDipilih = parseInt(document.getElementById("inputTahun").value);
         const targetIdPelanggan = document.getElementById("selectIdPelanggan").value.trim().toUpperCase();
@@ -2938,6 +3182,10 @@ function normalizeCSVHeader(value){
 }
 
 async function uploadCSVFiles(files){
+    if (![USER_ROLES.SUPERUSER, USER_ROLES.ADMIN].includes(currentRole)) {
+        showToast('Upload file hanya tersedia untuk superuser dan admin.', 'warning');
+        return;
+    }
     if(!files || files.length === 0) return;
 
     const records = [];
@@ -3050,6 +3298,20 @@ window.onload = () => {
     // default page (preview)
     setActivePage(1);
 };
+
+function toggleSidebar() {
+    const layout = document.querySelector('.workspace-layout');
+    if (!layout) return;
+    layout.classList.toggle('sidebar-collapsed');
+    const collapsed = layout.classList.contains('sidebar-collapsed');
+    const appContent = document.getElementById('appContent');
+    if (appContent) appContent.classList.toggle('sidebar-collapsed', collapsed);
+    const toggle = layout.querySelector('.sidebar-toggle');
+    if (toggle) {
+        toggle.setAttribute('aria-label', collapsed ? 'Tampilkan sidebar' : 'Sembunyikan sidebar');
+        toggle.setAttribute('title', collapsed ? 'Tampilkan sidebar' : 'Sembunyikan sidebar');
+    }
+}
 
 function setActivePage(pageNumber){
     const pages = document.querySelectorAll('.page-section');
